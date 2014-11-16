@@ -95,4 +95,5 @@ public class Flight implements Serializable {
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
+
 }

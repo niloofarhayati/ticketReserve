@@ -1,6 +1,7 @@
 package ir.dotin.Manager;
 
 
+import ir.dotin.Model.Flight;
 import ir.dotin.Model.User;
 import ir.dotin.utils.HibernateUtil;
 import org.hibernate.HibernateException;
@@ -20,36 +21,43 @@ public class FlightManager {
 	    }
 
 
-	public boolean Login(String username, String password) {
+	public List<Flight> flightList(String destination, String orgin) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction trans = session.beginTransaction();
+        CityManager cityManager=new CityManager();
 		try {
-			 Query query = session.createQuery(
-					"from Admin where username=:username and password=:password");
-			 	query.setParameter("username", username);
-		        query.setParameter("password", password);
-		        User id=(User) query.uniqueResult();
-			if (id!=null&&id.getId()!= null&&id.getId()!=0) {
+            Integer destinationID=cityManager.findCity(destination);
+            Integer orginID=cityManager.findCity(orgin);
+			List fl = session.createQuery(
+					"from Flight where destination_id="+destinationID+"and orgin_id=:"+orginID).list();
+			if (fl!=null&&!fl.isEmpty()) {
 				session.getTransaction().commit();
-				return true;
+				return fl;
 			} else
-				return false;
+				return null;
 		} catch (Exception he) {
 			he.printStackTrace();
 			if (trans != null)
 				trans.rollback();
-			return false;
+			return null;
 		} finally {
 			session.close();
 		}
 	}
-    public User find(String id){
+    public String Reserve(Integer id){
        Session session = HibernateUtil.getSessionFactory().openSession();
        Transaction trans = session.beginTransaction();
             try {
-            User b = (User) session.get(User.class, Long.parseLong(id));
-            session.getTransaction().commit();
-            return b;
+             Flight b = (Flight) session.get(Flight.class, id);
+                if(b.getCapacity()>=1) {
+                    b.setCapacity(b.getCapacity() - 1);
+                    session.update(b);
+                    session.getTransaction().commit();
+                    return "Success";
+                }
+                else{
+                    return  "Flight is full";
+                }
         } catch (HibernateException he) {
         he.printStackTrace();
         if (trans != null)
@@ -59,33 +67,13 @@ public class FlightManager {
         session.close();
     }
     }
-    public Boolean IsAdmin(String id){
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            User b = (User) session.get(User.class, Long.parseLong(id));
-            session.getTransaction().commit();
-            if(b.getType()==1)
-                return  true;
-            else{
-                return false;
-            }
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return false;
-        } finally {
-            session.close();
-        }
-    }
 
-    public User destroy(String id){
+    public Flight destroy(Integer id){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
 
-        User b = (User) session.get(User.class, Long.parseLong(id));
+            Flight b = (Flight) session.get(Flight.class, id);
         session.delete(b);
         session.getTransaction().commit();
         return b;
@@ -105,7 +93,7 @@ public class FlightManager {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-        List l = session.createQuery("from Admin").list();
+        List l = session.createQuery("from Flight").list();
         session.getTransaction().commit();
         return l;
     } catch (HibernateException he) {
@@ -118,7 +106,7 @@ public class FlightManager {
     }
     }
 
-    public Boolean save(User b){
+    public Boolean save(Flight b){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
@@ -134,15 +122,19 @@ public class FlightManager {
             session.close();
         }
     }
-    public void update(String id, String first,String last,String username,String pass,Integer type){
+    public void update(Integer id,Integer airlinID,String name, Integer airportID,
+                       Integer capacity,Integer orginID,Integer destinationID){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-        User b = (User) session.get(User.class, Long.parseLong(id));
-        b.setFirst_name(first);
-        b.setLast_name(last);
-        b.setType(type);
-        session.update(b);
+            Flight flight = (Flight) session.get(Flight.class, id);
+            flight.setAirLine_id(airlinID);
+            flight.setAirport_id(airportID);
+            flight.setCapacity(capacity);
+            flight.setDestination_id(destinationID);
+            flight.setName(name);
+            flight.setOrgin_id(orginID);
+        session.update(flight);
         session.getTransaction().commit();
     } catch (HibernateException he) {
         he.printStackTrace();
@@ -153,18 +145,20 @@ public class FlightManager {
     }
     }
 
-    private void createAndStoreAdmin(String last,String first, String pass, String username,Integer type)  {
+    private void createAndStoreAdmin(Integer airlinID,String name, Integer airportID,
+                                     Integer capacity,Integer orginID,Integer destinationID)  {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
 
-        User ad = new User();
-        ad.setLast_name(first);
-        ad.setFirst_name(first);
-        ad.setPassword(pass);
-        ad.setUsername(username);
-            ad.setType(type);
-        session.save(ad);
+        Flight flight = new Flight();
+            flight.setAirLine_id(airlinID);
+            flight.setAirport_id(airportID);
+            flight.setCapacity(capacity);
+            flight.setDestination_id(destinationID);
+            flight.setName(name);
+            flight.setOrgin_id(orginID);
+        session.save(flight);
         session.getTransaction().commit();
         } catch (HibernateException he) {
             he.printStackTrace();

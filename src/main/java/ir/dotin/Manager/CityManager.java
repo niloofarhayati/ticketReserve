@@ -73,6 +73,22 @@ public class CityManager {
         session.close();
     }
     }
+    public Integer findCity(String name){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction trans = session.beginTransaction();
+        try {
+           City city = (City) session.createQuery("from  City where name="+name).uniqueResult();
+            session.getTransaction().commit();
+            return city.getId();
+        } catch (HibernateException he) {
+            he.printStackTrace();
+            if (trans != null)
+                trans.rollback();
+            return null;
+        } finally {
+            session.close();
+        }
+    }
 
     public Boolean save( City b){
         Session session = HibernateUtil.getSessionFactory().openSession();
