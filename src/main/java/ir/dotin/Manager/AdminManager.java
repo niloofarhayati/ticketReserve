@@ -15,7 +15,7 @@ import java.util.List;
 
 public class AdminManager {
 
-	public boolean Login(String username, String password) {
+	public Integer Login(String username, String password) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction trans = session.beginTransaction();
 		try {
@@ -26,25 +26,25 @@ public class AdminManager {
 		        User id=(User) query.uniqueResult();
 			if (id!=null&&id.getId()!= null&&id.getId()!=0) {
 				session.getTransaction().commit();
-				return true;
+				return id.getId();
 			} else
-				return false;
+				return null;
 		} catch (Exception he) {
 			he.printStackTrace();
 			if (trans != null)
 				trans.rollback();
-			return false;
+			return null;
 		} finally {
 			session.close();
 		}
 	}
-    public User find(String id){
+    public Integer find(String username){
        Session session = HibernateUtil.getSessionFactory().openSession();
        Transaction trans = session.beginTransaction();
             try {
-            User b = (User) session.get(User.class, Long.parseLong(id));
+            User b = (User) session.createQuery("from User where username="+username).uniqueResult();
             session.getTransaction().commit();
-            return b;
+            return b.getId();
         } catch (HibernateException he) {
         he.printStackTrace();
         if (trans != null)
@@ -75,7 +75,7 @@ public class AdminManager {
         }
     }
 
-    public User destroy(String id){
+    public Boolean destroy(String id){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
@@ -83,12 +83,17 @@ public class AdminManager {
         User b = (User) session.get(User.class, Long.parseLong(id));
         session.delete(b);
         session.getTransaction().commit();
-        return b;
+            if(b!=null) {
+                return true;
+            }
+            else {
+                return false;
+            }
         } catch (HibernateException he) {
             he.printStackTrace();
             if (trans != null)
                 trans.rollback();
-            return null;
+            return false;
         } finally {
             session.close();
         }

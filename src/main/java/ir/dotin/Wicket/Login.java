@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.io.Serializable;
 
@@ -24,7 +25,7 @@ public class Login extends WebPage implements Serializable {
     private TextField field1;
     AdminManager am=new AdminManager();
     public  Login() {
-        add(new NavomaticBorder("navomaticBorder"));
+     //   add(new NavomaticBorder("navomaticBorder"));
         Form form = new Form("form");
         field = new TextField("field", new Model(""));
         field1 = new TextField("field1", new Model(""));
@@ -39,10 +40,21 @@ public class Login extends WebPage implements Serializable {
             public void onSubmit() {
                 String value = (String)field.getModelObject();
                 String value1 = (String)field1.getModelObject();
-                Boolean b=am.Login(value,value1);
-                if(b){
+                Integer b=am.Login(value,value1);
+                Boolean bo=am.IsAdmin(b.toString());
+                if(b!=null&&bo){
                     label.setDefaultModelObject("login Successful");
                    Constants.LOGIN=true;
+                    PageParameters params = new PageParameters();
+                    params.add("login", "true");
+                    setResponsePage(NavomaticBorder.class,params);
+                }
+                 else if(b!=null&&!bo){
+                    label.setDefaultModelObject("login Successful");
+                    Constants.LOGIN=true;
+                    PageParameters params = new PageParameters();
+                    params.add("login", "true");
+                    setResponsePage(NavomaticBorder.class,params);
                 }
                 else{
                     label.setDefaultModelObject("wrong username or password");
