@@ -29,7 +29,7 @@ public class FlightManager {
             Integer destinationID=cityManager.findCity(destination);
             Integer orginID=cityManager.findCity(orgin);
 			List fl = session.createQuery(
-					"from Flight where destination_id="+destinationID+"and orgin_id=:"+orginID).list();
+					"from Flight where destination_id="+destinationID+" and orgin_id=:"+orginID).list();
 			if (fl!=null&&!fl.isEmpty()) {
 				session.getTransaction().commit();
 				return fl;

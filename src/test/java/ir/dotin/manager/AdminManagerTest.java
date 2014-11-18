@@ -4,6 +4,7 @@ import ir.dotin.Manager.AdminManager;
 import ir.dotin.Model.User;
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -21,7 +22,7 @@ public class AdminManagerTest {
         user.setUsername("admin");
         user.setType(0);
         adminManager.save(user);
-        assertTrue(adminManager.Login("admin", "1234"));
+        assertNotNull(adminManager.Login("admin", "1234"));
 
     }
 

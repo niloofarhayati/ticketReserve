@@ -4,6 +4,7 @@ package ir.dotin.Manager;
 import ir.dotin.Model.City;
 import ir.dotin.utils.HibernateUtil;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -16,6 +17,7 @@ public class CityManager {
 	  public static void main(String[] args) throws SQLException, IOException {
 
 		  CityManager ad=new CityManager();
+          ad.findCity("tehran");
 
 	    }
 
@@ -57,11 +59,11 @@ public class CityManager {
 
 
     @SuppressWarnings("rawtypes")
-    public List list(){
+    public List<City> list(){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-        List l = session.createQuery("from  City").list();
+        List<City> l = session.createQuery("from  City").list();
         session.getTransaction().commit();
         return l;
     } catch (HibernateException he) {
@@ -73,13 +75,15 @@ public class CityManager {
         session.close();
     }
     }
-    public Integer findCity(String name){
+    public Integer findCity(String city){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-           City city = (City) session.createQuery("from  City where name="+name).uniqueResult();
+            Query query =  session.createQuery("from City where name=:city");
+            query.setParameter("city", city);
+            City cit= (City) query.uniqueResult();
             session.getTransaction().commit();
-            return city.getId();
+            return cit.getId();
         } catch (HibernateException he) {
             he.printStackTrace();
             if (trans != null)

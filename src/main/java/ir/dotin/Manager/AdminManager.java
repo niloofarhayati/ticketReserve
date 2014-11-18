@@ -8,8 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.io.IOException;
-import java.sql.SQLException;
+
 import java.util.List;
 
 
@@ -54,13 +53,13 @@ public class AdminManager {
         session.close();
     }
     }
-    public Boolean IsAdmin(String id){
+    public Boolean IsAdmin(Integer id){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-            User b = (User) session.get(User.class, Long.parseLong(id));
+            User b = (User) session.get(User.class, id);
             session.getTransaction().commit();
-            if(b.getType()==1)
+            if(b.getType()==0)
                 return  true;
             else{
                 return false;

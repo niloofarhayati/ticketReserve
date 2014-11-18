@@ -41,21 +41,23 @@ public class Login extends WebPage implements Serializable {
                 String value = (String)field.getModelObject();
                 String value1 = (String)field1.getModelObject();
                 Integer b=am.Login(value,value1);
-                Boolean bo=am.IsAdmin(b.toString());
-                if(b!=null&&bo){
-                    label.setDefaultModelObject("login Successful");
-                   Constants.LOGIN=true;
-                    PageParameters params = new PageParameters();
-                    params.add("login", "true");
-                    setResponsePage(NavomaticBorder.class,params);
+                if(b!=null){
+                    Boolean bo=am.IsAdmin(b);
+                    if(bo) {
+                        label.setDefaultModelObject("login Successful");
+                        Constants.LOGIN = true;
+                        PageParameters params = new PageParameters();
+                        params.add("login", "true");
+                        setResponsePage(Menu.class, params);
+                    } else if(!bo){
+                        label.setDefaultModelObject("login Successful");
+                        Constants.LOGIN=true;
+                        PageParameters params = new PageParameters();
+                        params.add("login", "true");
+                        setResponsePage(ListMultipleChoicePage.class,params);
+                    }
                 }
-                 else if(b!=null&&!bo){
-                    label.setDefaultModelObject("login Successful");
-                    Constants.LOGIN=true;
-                    PageParameters params = new PageParameters();
-                    params.add("login", "true");
-                    setResponsePage(NavomaticBorder.class,params);
-                }
+
                 else{
                     label.setDefaultModelObject("wrong username or password");
                     Constants.LOGIN=false;

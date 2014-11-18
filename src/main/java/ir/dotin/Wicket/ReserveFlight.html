@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
-<h1>نمایش کاربران</h1>
+<h1> نمایش پروازها</h1>
 
 <p>
 <p>
@@ -13,13 +13,14 @@
         <span wicket:id="group">
             <table style="border: 2px dotted #fc0; width: 400px; padding: 5px;">
                 <tr>
-                    <td valign="top">Select a person</td>
+                    <td valign="top">برای رزرو پرواز مورد نظر خود را انتخاب کنید</td>
                     <td>
                         <table cellspacing="0" cellpadding="2">
                             <tr>
-                                <td><b>Select</b></td>
-                                <td><b>First Name</b></td>
-                                <td><b>Last Name</b></td>
+                                <td><b>انتخاب</b></td>
+                                <td><b> پرواز</b></td>
+                                <td><b>مبدا</b></td>
+                                <td><b>مقصد</b></td>
                             </tr>
                             <tr wicket:id="persons">
                                 <td><input type="radio" wicket:id="radio"/></td>
@@ -34,7 +35,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <input type="submit" value="submit" />
+                        <input type="submit" value="رزرو" />
                     </td>
                 </tr>
             </table>
