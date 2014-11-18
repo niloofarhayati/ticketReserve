@@ -10,7 +10,7 @@
         <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
         <init-param>
             <param-name>applicationClassName</param-name>
-            <param-value>ir.dotin.Wicket.NavomaticApplication</param-value>
+            <param-value>ir.dotin.view.NavomaticApplication</param-value>
         </init-param>
     </filter>
     <filter-mapping>

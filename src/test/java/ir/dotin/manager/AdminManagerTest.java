@@ -1,11 +1,9 @@
 package ir.dotin.manager;
 
-import ir.dotin.Manager.AdminManager;
-import ir.dotin.Model.User;
+import ir.dotin.model.User;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by niloofar on 11/15/14.
