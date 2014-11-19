@@ -7,6 +7,8 @@ package ir.dotin.view;
 import ir.dotin.manager.CityManager;
 import ir.dotin.manager.FlightManager;
 import ir.dotin.model.City;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -24,8 +26,8 @@ public class SearchFlight extends WebPage implements Serializable {
     CityManager cityManager = new CityManager();
     List<String> list=new LinkedList<String>();
     private static List<String> cities=new LinkedList<String>();
-    private String selected = "";
-    private String selected1 = "";
+    private String selected = "tehran";
+    private String selected1 = "tehran";
 
     public SearchFlight() {
 //      List<City> ci= cityManager.list();
@@ -36,27 +38,9 @@ public class SearchFlight extends WebPage implements Serializable {
         cities = list;
         add(new FeedbackPanel("feedback1"));
 
-        DropDownChoice<String> listSites = new DropDownChoice<String>(
-                "sites", new PropertyModel<String>(this, "selected"), cities);
-
-        Form<?> form1 = new Form<Void>("form1") {
+        Form<?> form = new Form<Void>("form") {
             @Override
             protected void onSubmit() {
-
-
-            }
-        };
-
-        add(form1);
-        form1.add(listSites);
-        DropDownChoice<String> listSites1 = new DropDownChoice<String>(
-                "sites2", new PropertyModel<String>(this, "selected1"), cities);
-
-        Form<?> form2 = new Form<Void>("form2") {
-            @Override
-            protected void onSubmit() {
-                info("Selected search engine : " + selected1);
-              //  List<Flight> fi=  flightManager.flightList(selected,selected1);
                 PageParameters params = new PageParameters();
                 params.add("orgin", selected);
                 params.add("destination", selected1);
@@ -64,9 +48,50 @@ public class SearchFlight extends WebPage implements Serializable {
 
             }
         };
+        add(form);
 
-        add(form2);
-        form2.add(listSites1);
+        final DropDownChoice<String> makes = new DropDownChoice<String>("makes",
+                new PropertyModel<String>(this, "selected1"), cities);
+        final DropDownChoice<String> city = new DropDownChoice<String>("city",
+                new PropertyModel<String>(this, "selected"), cities);
+        form.add(city);
+        form.add(makes);
+
+        makes.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target)
+            {
+//                PageParameters params = new PageParameters();
+//                params.add("orgin", selected);
+//                params.add("destination", selected1);
+//                setResponsePage(ReserveFlight.class,params);
+            }
+        });
+        city.add(new AjaxFormComponentUpdatingBehavior("onchange")
+        {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target)
+            {
+            }
+        });
+//        final DropDownChoice<String> listSites1 = new DropDownChoice<String>(
+//                "sites2", new PropertyModel<String>(this, "selected1"), cities);
+
+//        Form<?> form2 = new Form<Void>("form2"){
+//             @Override
+//            protected void onSubmit() {
+//              //  List<Flight> fi=  flightManager.flightList(selected,selected1);
+//                PageParameters params = new PageParameters();
+//                params.add("orgin", selected);
+//                params.add("destination", selected1);
+//                setResponsePage(ReserveFlight.class,params);
+//
+//            }
+//        };
+//
+//        add(form2);
+//        form2.add(listSites1);
 
 
 

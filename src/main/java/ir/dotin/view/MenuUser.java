@@ -21,6 +21,7 @@ public class MenuUser extends WebPage implements Serializable {
                 @Override
                 public void onSubmit() {
                     Constants.LOGIN = false;
+                    setResponsePage(Login.class);
                 }
             });
             add(form);

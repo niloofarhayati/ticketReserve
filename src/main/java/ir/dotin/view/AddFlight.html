@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <title>Wicket Examples - component reference</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<h1>اضافه کردن پرواز جدید</h1>
+
+<p>
+
+<p>
+<form wicket:id="form">
+    <p>
+        <label>مبدا خود را انتخاب کنید </label>
+        <br/>
+        <select wicket:id="org"></select>
+    </p>
+    <p>
+        <label>مقصد خود را انتخاب کنید </label>
+        <br/>
+    <select wicket:id="dest"></select>
+        </p>
+    <p>
+        <label>خط هوایی </label>
+        <br/>
+        <select wicket:id="airline"></select>
+    </p>
+    <p>
+        <label>فرودگاه</label>
+        <br/>
+        <select wicket:id="airport"></select>
+    </p>
+    <p wicket:id="orginLabel">Fun Fun Fun</p>
+    <input wicket:id="flightName" type="text" size="20"/>
+    <p wicket:id="destLabel">Fun Fun Fun</p>
+    <input wicket:id="flightCapacity" type="number" size="20"/>
+    <input type="submit" value="اضافه کردن پرواز" />
+</form>
+<span wicket:id="feedback1">feedbackmessages will be put here</span>
+</p>
+</body>
+</html>

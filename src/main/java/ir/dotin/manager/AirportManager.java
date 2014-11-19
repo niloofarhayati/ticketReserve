@@ -1,9 +1,11 @@
 package ir.dotin.manager;
 
 
+import ir.dotin.model.Airline;
 import ir.dotin.model.Airport;
 import ir.dotin.util.HibernateUtil;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -35,6 +37,23 @@ public class AirportManager {
             session.close();
         }
     }
+    public Integer findAirport(String name) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction trans = session.beginTransaction();
+        try {
+            Query query = session.createQuery("from Airport where name=:name");
+            query.setParameter("name", name);
+            Airport airport = (Airport) query.uniqueResult();
+            return airport.getId();
+        } catch (HibernateException he) {
+            he.printStackTrace();
+            if (trans != null)
+                trans.rollback();
+            return null;
+        } finally {
+            session.close();
+        }
+    }
 
     public Airport destroy(String id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -57,11 +76,11 @@ public class AirportManager {
 
 
     @SuppressWarnings("rawtypes")
-    public List list() {
+    public List<Airport> list() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-            List l = session.createQuery("from  Airport").list();
+            List<Airport> l = session.createQuery("from  Airport").list();
             session.getTransaction().commit();
             return l;
         } catch (HibernateException he) {

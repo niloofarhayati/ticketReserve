@@ -41,7 +41,10 @@ public class AdminManager {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-            User b = (User) session.createQuery("from User where username=" + username).uniqueResult();
+            Query query = session.createQuery(
+                    "from User where username=:username");
+            query.setParameter("username", username);
+            User b = (User) query.uniqueResult();
             session.getTransaction().commit();
             return b.getId();
         } catch (HibernateException he) {

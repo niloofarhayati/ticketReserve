@@ -58,7 +58,6 @@ public class CityManager {
     }
 
 
-    @SuppressWarnings("rawtypes")
     public List<City> list() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();

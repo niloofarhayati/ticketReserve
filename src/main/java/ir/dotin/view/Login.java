@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -30,7 +31,7 @@ public class Login extends WebPage implements Serializable {
         //   add(new NavomaticBorder("navomaticBorder"));
         Form form = new Form("form");
         field = new TextField("field", new Model(""));
-        field1 = new TextField("field1", new Model(""));
+        field1 = new PasswordTextField("field1", new Model(""));
         add(username = new Label("username", new Model("username:")));
         add(password = new Label("password", new Model("password:")));
         form.add(field);
