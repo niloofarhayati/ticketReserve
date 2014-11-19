@@ -14,29 +14,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public class AirportManager {
-    public static void main(String[] args) throws SQLException, IOException {
+public class AirportManager extends BaseManager{
 
-        AirportManager ad = new AirportManager();
-
-    }
-
-    public Airport find(String id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            Airport b = (Airport) session.get(Airport.class, Long.parseLong(id));
-            session.getTransaction().commit();
-            return b;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
-        } finally {
-            session.close();
-        }
-    }
     public Integer findAirport(String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
@@ -50,61 +29,6 @@ public class AirportManager {
             if (trans != null)
                 trans.rollback();
             return null;
-        } finally {
-            session.close();
-        }
-    }
-
-    public Airport destroy(String id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-
-            Airport b = (Airport) session.get(Airport.class, Long.parseLong(id));
-            session.delete(b);
-            session.getTransaction().commit();
-            return b;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
-        } finally {
-            session.close();
-        }
-    }
-
-
-    @SuppressWarnings("rawtypes")
-    public List<Airport> list() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            List<Airport> l = session.createQuery("from  Airport").list();
-            session.getTransaction().commit();
-            return l;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
-        } finally {
-            session.close();
-        }
-    }
-
-    public Boolean save(Airport b) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            session.save(b);
-            session.getTransaction().commit();
-            return true;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return false;
         } finally {
             session.close();
         }
@@ -128,6 +52,23 @@ public class AirportManager {
             session.close();
         }
     }
+    public List<Airport> list() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction trans = session.beginTransaction();
+        try {
+            List<Airport> l = session.createQuery("from  Airport ").list();
+            session.getTransaction().commit();
+            return l;
+        } catch (HibernateException he) {
+            he.printStackTrace();
+            if (trans != null)
+                trans.rollback();
+            return null;
+        } finally {
+            session.close();
+        }
+    }
+
 
     private Boolean createAndStoreAdmin(String place, String name, Integer capacity) {
         Session session = HibernateUtil.getSessionFactory().openSession();

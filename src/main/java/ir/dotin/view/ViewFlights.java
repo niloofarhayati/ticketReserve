@@ -5,6 +5,8 @@ package ir.dotin.view;
  */
 
 import ir.dotin.manager.AdminManager;
+import ir.dotin.manager.FlightManager;
+import ir.dotin.model.Flight;
 import ir.dotin.model.User;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -21,34 +23,36 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class ViewUsers extends WebPage implements Serializable {
-    AdminManager am = new AdminManager();
-    List<User> list;
+public class ViewFlights extends WebPage implements Serializable {
+    FlightManager flightManager = new FlightManager();
 
-    public ViewUsers() {
+    public ViewFlights() {
 
-        final RadioGroup<User> group = new RadioGroup<User>("group", new Model<User>());
+        final RadioGroup<Flight> group = new RadioGroup<Flight>("group", new Model<Flight>());
         Form<?> form = new Form("form") {
             @Override
             protected void onSubmit() {
-                group.getId();
+                Flight flight=(Flight)group.getDefaultModelObject();
+
                 info("selected person: " + group.getDefaultModelObjectAsString());
             }
         };
 
         add(form);
         form.add(group);
-        ListView<User> persons = new ListView<User>("persons", am.list()) {
+        ListView<Flight> persons = new ListView<Flight>("persons", flightManager.list()) {
 
             @Override
-            protected void populateItem(ListItem<User> item) {
-                item.add(new Radio<User>("radio", item.getModel()));
+            protected void populateItem(ListItem<Flight> item) {
+                item.add(new Radio<Flight>("radio", item.getModel()));
                 item.add(new Label("id", new PropertyModel<String>(item.getDefaultModel(),
-                        "id")));
+                        "name")));
                 item.add(new Label("name",
-                        new PropertyModel<String>(item.getDefaultModel(), "username")));
+                        new PropertyModel<String>(item.getDefaultModel(), "orgin_id")));
                 item.add(new Label("lastName", new PropertyModel<String>(item.getDefaultModel(),
-                        "last_name")));
+                        "destination_id")));
+                item.add(new Label("capacity", new PropertyModel<String>(item.getDefaultModel(),
+                        "capacity")));
             }
 
         };

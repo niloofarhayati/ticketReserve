@@ -12,12 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public class FlightManager {
-    public static void main(String[] args) throws SQLException, IOException {
-
-        FlightManager ad = new FlightManager();
-    }
-
+public class FlightManager extends BaseManager {
 
     public List<Flight> flightList(String destination, String orgin) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -66,32 +61,11 @@ public class FlightManager {
         }
     }
 
-    public Flight destroy(Integer id) {
+    public List<Flight> list() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-
-            Flight b = (Flight) session.get(Flight.class, id);
-            session.delete(b);
-            session.getTransaction().commit();
-            return b;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
-        } finally {
-            session.close();
-        }
-    }
-
-
-    @SuppressWarnings("rawtypes")
-    public List list() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            List l = session.createQuery("from Flight").list();
+            List<Flight> l = session.createQuery("from  Flight ").list();
             session.getTransaction().commit();
             return l;
         } catch (HibernateException he) {
@@ -99,23 +73,6 @@ public class FlightManager {
             if (trans != null)
                 trans.rollback();
             return null;
-        } finally {
-            session.close();
-        }
-    }
-
-    public Boolean save(Flight b) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            session.save(b);
-            session.getTransaction().commit();
-            return true;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return false;
         } finally {
             session.close();
         }

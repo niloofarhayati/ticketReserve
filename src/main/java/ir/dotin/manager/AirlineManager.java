@@ -2,6 +2,7 @@ package ir.dotin.manager;
 
 
 import ir.dotin.model.Airline;
+import ir.dotin.model.User;
 import ir.dotin.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -13,29 +14,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public class AirlineManager {
+public class AirlineManager extends  BaseManager{
     public static void main(String[] args) throws SQLException, IOException {
 
         AirlineManager ad = new AirlineManager();
 
     }
 
-    public Airline find(String id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            Airline b = (Airline) session.get(Airline.class, Long.parseLong(id));
-            session.getTransaction().commit();
-            return b;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
-        } finally {
-            session.close();
-        }
-    }
     public Integer findAirline(String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
@@ -53,28 +38,6 @@ public class AirlineManager {
             session.close();
         }
     }
-
-    public Airline destroy(String id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-
-            Airline b = (Airline) session.get(Airline.class, Long.parseLong(id));
-            session.delete(b);
-            session.getTransaction().commit();
-            return b;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
-        } finally {
-            session.close();
-        }
-    }
-
-
-    @SuppressWarnings("rawtypes")
     public List<Airline> list() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
@@ -87,23 +50,6 @@ public class AirlineManager {
             if (trans != null)
                 trans.rollback();
             return null;
-        } finally {
-            session.close();
-        }
-    }
-
-    public Boolean save(Airline b) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            session.save(b);
-            session.getTransaction().commit();
-            return true;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return false;
         } finally {
             session.close();
         }

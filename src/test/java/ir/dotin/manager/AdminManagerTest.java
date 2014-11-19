@@ -1,7 +1,10 @@
 package ir.dotin.manager;
 
+import ir.dotin.model.City;
 import ir.dotin.model.User;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -19,7 +22,9 @@ public class AdminManagerTest {
         user.setPassword("1234");
         user.setUsername("admin");
         user.setType(0);
-        adminManager.save(user);
+       List<User> us=  adminManager.list(User.class);
+        for(User u:us)
+        System.out.println(u.getUsername());
         assertNotNull(adminManager.Login("admin", "1234"));
 
     }

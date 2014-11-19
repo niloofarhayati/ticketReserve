@@ -11,7 +11,7 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 
-public class AdminManager {
+public class AdminManager extends BaseManager {
 
     public Integer Login(String username, String password) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -37,7 +37,7 @@ public class AdminManager {
         }
     }
 
-    public Integer find(String username) {
+    public Integer findID(String username) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
@@ -78,36 +78,12 @@ public class AdminManager {
         }
     }
 
-    public Boolean destroy(String id) {
+
+    public List<User> list() {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-
-            User b = (User) session.get(User.class, Long.parseLong(id));
-            session.delete(b);
-            session.getTransaction().commit();
-            if (b != null) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return false;
-        } finally {
-            session.close();
-        }
-    }
-
-
-    @SuppressWarnings("rawtypes")
-    public List list() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            List l = session.createQuery("from User").list();
+            List<User> l = session.createQuery("from  User").list();
             session.getTransaction().commit();
             return l;
         } catch (HibernateException he) {
@@ -115,23 +91,6 @@ public class AdminManager {
             if (trans != null)
                 trans.rollback();
             return null;
-        } finally {
-            session.close();
-        }
-    }
-
-    public Boolean save(User b) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
-        try {
-            session.save(b);
-            session.getTransaction().commit();
-            return true;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return false;
         } finally {
             session.close();
         }

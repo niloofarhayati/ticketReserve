@@ -36,8 +36,8 @@ public class DeleteUser extends WebPage implements Serializable {
                 @Override
                 public void onSubmit() {
                     String username = (String) field.getModelObject();
-                    Integer in = am.find(username);
-                    Boolean b = am.destroy(in.toString());
+                    Integer in = am.findID(username);
+                    Boolean b = am.destroy(in.toString(),User.class);
                     if (b) {
                         label.setDefaultModelObject("Successful");
                     } else {

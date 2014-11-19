@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<head>
+    <title>Wicket Examples - component reference</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+<h1>نمایش پروازها</h1>
+
+<p>
+
+<p>
+
+<form wicket:id="form">
+        <span wicket:id="group">
+            <table style="border: 2px dotted #fc0; width: 400px; padding: 5px;">
+                <tr>
+                    <td valign="top">Select a person</td>
+                    <td>
+                        <table cellspacing="0" cellpadding="2">
+                            <tr>
+                                <td><b>انتخاب</b></td>
+                                <td><b>نام</b></td>
+                                <td><b>مبدا</b></td>
+                                <td><b>مقصد</b></td>
+                                <td><b>گنجایش</b></td>
+
+                            </tr>
+                            <tr wicket:id="persons">
+                                <td><input type="radio" wicket:id="radio"/></td>
+                                <td><span wicket:id="id">[this is where id will be]</span></td>
+                                <td><span wicket:id="name">[this is where name will be]</span></td>
+                                <td><span wicket:id="lastName">[this is where lastname will be]</span></td>
+                                <td><span wicket:id="capacity">[this is where id will be]</span></td>
+                            </tr>
+                        </table>
+                  <span valign="top">
+                  </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="به روز رسانی"/>
+                        <input type="submit" value="حذف"/>
+                    </td>
+                </tr>
+            </table>
+        </span>
+</form>
+<span wicket:id="feedback">feedbackmessages will be put here</span>
+</p>
+</body>
+</html>
