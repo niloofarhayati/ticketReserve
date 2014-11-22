@@ -4,7 +4,7 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-    <display-name>Wicket Examples</display-name>
+    <display-name>Reserve Ticket</display-name>
     <filter>
         <filter-name>HelloWorldApplication</filter-name>
         <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
