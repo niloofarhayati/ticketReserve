@@ -30,32 +30,38 @@ public class ReserveFlight extends WebPage implements Serializable {
     FlightManager flightManager=new FlightManager();
     ReserveManager reserveManager = new ReserveManager();
     public ReserveFlight(final PageParameters parameters) {
-        List<Flight> result = new LinkedList<Flight>();
-
-       String destination=parameters.get("destination").toString();
-       String orgin= parameters.get("orgin").toString();
-        List<Flight> fi=  flightManager.flightList(destination,orgin);
-        final RadioGroup<Flight> group = new RadioGroup<Flight>("group", new Model<Flight>());
+        Session session = getSession();
+        Boolean login = (Boolean) session.getAttribute("login");
+        if (login) {
+            List<Flight> result = new LinkedList<Flight>();
+            add(new NavomaticBorder1("navomaticBorder1"));
+            String destination = parameters.get("destination").toString();
+            String orgin = parameters.get("orgin").toString();
+            List<Flight> fi = flightManager.flightList(destination, orgin);
+            final RadioGroup<Flight> group = new RadioGroup<Flight>("group", new Model<Flight>());
             Form<?> form = new Form("form") {
                 @Override
                 protected void onSubmit() {
-                    Flight fi = (Flight) group.getDefaultModelObject();
-                    System.out.println(group.getId());
-                    String s = flightManager.Reserve(fi.getId());
-                    if (s.equalsIgnoreCase("Success")) {
-                        info("رزرو با موفقیت انجام شد ");
-                        Reserve reserve = new Reserve();
-                        reserve.setFlightID(fi.getId());
-                        Session session = getSession();
-                        Integer in = (Integer) session.getAttribute("USERID");
-                        reserve.setUserID(in);
-                        reserveManager.save(reserve);
-                    }
-                    else if(s.equalsIgnoreCase("Flight is Full")){
-                        info("‍‍‍‍‍ظرفیت پرواز مورد نظر به اتمام رسیده است");
-                    }
-                    else{
-                        info("انجام درخواست شما در حال حاضر امکان ‍ذیر نمی باشد");
+                    Flight fi = new Flight();
+                    if (fi == null) {
+                        info("لطفا گزینه مورد نظر خود را انتخاب کنید");
+                    } else {
+                        fi = (Flight) group.getDefaultModelObject();
+                        System.out.println(group.getId());
+                        String s = flightManager.Reserve(fi.getId());
+                        if (s.equalsIgnoreCase("Success")) {
+                            info("رزرو با موفقیت انجام شد ");
+                            Reserve reserve = new Reserve();
+                            reserve.setFlightID(fi.getId());
+                            Session session = getSession();
+                            Integer in = (Integer) session.getAttribute("USERID");
+                            reserve.setUserID(in);
+                            reserveManager.save(reserve);
+                        } else if (s.equalsIgnoreCase("Flight is Full")) {
+                            info("‍‍‍‍‍ظرفیت پرواز مورد نظر به اتمام رسیده است");
+                        } else {
+                            info("انجام درخواست شما در حال حاضر امکان ‍ذیر نمی باشد");
+                        }
                     }
                 }
             };
@@ -63,7 +69,7 @@ public class ReserveFlight extends WebPage implements Serializable {
             add(form);
             form.add(group);
 
-            ListView<Flight> persons = new ListView<Flight>("persons",fi) {
+            ListView<Flight> persons = new ListView<Flight>("persons", fi) {
 
                 @Override
                 protected void populateItem(ListItem<Flight> item) {
@@ -83,5 +89,6 @@ public class ReserveFlight extends WebPage implements Serializable {
             group.add(persons);
 
             add(new FeedbackPanel("feedback"));
-       }
+        }
+    }
     }

@@ -1,17 +1,15 @@
 package ir.dotin.manager;
 
 
-import ir.dotin.model.Airline;
-import ir.dotin.model.City;
+import ir.dotin.model.User;
 import ir.dotin.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
+
 
 
 public class BaseManager<T> {
@@ -32,6 +30,25 @@ public class BaseManager<T> {
             session.close();
         }
     }
+//    public List list(Class<?> cls) {
+//        Session session = HibernateUtil.getSessionFactory().openSession();
+//        Transaction trans = session.beginTransaction();
+//        try {
+//            Query query=session.createQuery("from  cls");
+//            query.setParameter("cls", T);
+//            List l = query.list();
+//            session.getTransaction().commit();
+//            return l;
+//        } catch (HibernateException he) {
+//            he.printStackTrace();
+//            if (trans != null)
+//                trans.rollback();
+//            return null;
+//        } finally {
+//            session.close();
+//        }
+//    }
+
 
     public Boolean destroy(String id,Class<?> cls) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -53,37 +70,29 @@ public class BaseManager<T> {
     }
 
 
-    public List<T> list(Class<?> cls) {
+    public ir.dotin.model.Transaction createConnection(){
+        ir.dotin.model.Transaction transaction=new ir.dotin.model.Transaction();
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
-        try {
-            List<T> l = session.createQuery("from  T").list();
-            session.getTransaction().commit();
-            return l;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
-        } finally {
-            session.close();
-        }
+        transaction.setSession(session);
+        transaction.setTransaction(trans);
+        return  transaction;
     }
 
     public Boolean save(T b) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
+        ir.dotin.model.Transaction transaction = this.createConnection();
         try {
-            session.save(b);
-            session.getTransaction().commit();
+            Session session=transaction.getSession();
+            transaction.getSession().save(b);
+            transaction.getSession().getTransaction().commit();
             return true;
         } catch (HibernateException he) {
             he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
+            if (transaction.getTransaction() != null)
+                transaction.getTransaction().rollback();
             return false;
         } finally {
-            session.close();
+            transaction.getSession().close();
         }
     }
 

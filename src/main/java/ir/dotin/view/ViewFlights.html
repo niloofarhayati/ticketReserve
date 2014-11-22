@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>نمایش پروازها</h1>
-
+<span wicket:id="navomaticBorder"></span>
 <p>
 
 <p>
@@ -40,12 +40,15 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <input type="submit" value="به روز رسانی"/>
-                        <input type="submit" value="حذف"/>
+                        <input type="submit" value=" ثبت انتخاب"/>
                     </td>
                 </tr>
             </table>
         </span>
+    <td colspan="2" align="center">
+    <input wicket:id="update" type="submit" value="به روز رسانی" />
+    <input wicket:id="delete" type="submit" value="حذف" />
+    </td>
 </form>
 <span wicket:id="feedback">feedbackmessages will be put here</span>
 </p>

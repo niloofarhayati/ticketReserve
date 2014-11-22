@@ -78,7 +78,7 @@ public class FlightManager extends BaseManager {
         }
     }
 
-    public void update(Integer id, Integer airlinID, String name, Integer airportID,
+    public Boolean update(Integer id, Integer airlinID, String name, Integer airportID,
                        Integer capacity, Integer orginID, Integer destinationID) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
@@ -92,10 +92,12 @@ public class FlightManager extends BaseManager {
             flight.setOrgin_id(orginID);
             session.update(flight);
             session.getTransaction().commit();
+            return true;
         } catch (HibernateException he) {
             he.printStackTrace();
             if (trans != null)
                 trans.rollback();
+            return false;
         } finally {
             session.close();
         }

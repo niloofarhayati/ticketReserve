@@ -51,6 +51,7 @@ public class Login extends WebPage implements Serializable {
                         Constants.LOGIN = true;
                         Session session = getSession();
                         session.setAttribute("userID", b);
+                        session.setAttribute("login",Constants.LOGIN);
                         PageParameters params = new PageParameters();
                         params.add("login", "true");
                         setResponsePage(MenuAdmin.class, params);
@@ -59,6 +60,7 @@ public class Login extends WebPage implements Serializable {
                         Constants.LOGIN = true;
                         Session session = getSession();
                         session.setAttribute("USERID", b);
+                        session.setAttribute("login",Constants.LOGIN);
                         PageParameters params = new PageParameters();
                         params.add("login", "true");
                         setResponsePage(MenuUser.class, params);

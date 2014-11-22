@@ -96,26 +96,28 @@ public class AdminManager extends BaseManager {
         }
     }
 
-    public void update(String id, String first, String last, String username, String pass, Integer type) {
+    public Boolean update(String id, String first, String last, String username, String pass, Integer type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-            User b = (User) session.get(User.class, Long.parseLong(id));
+            User b = (User) session.get(User.class, Integer.parseInt(id));
             b.setFirst_name(first);
             b.setLast_name(last);
             b.setType(type);
             session.update(b);
             session.getTransaction().commit();
+            return  true;
         } catch (HibernateException he) {
             he.printStackTrace();
             if (trans != null)
                 trans.rollback();
+            return false;
         } finally {
             session.close();
         }
     }
 
-    private void createAndStoreAdmin(String last, String first, String pass, String username, Integer type) {
+    public Boolean createAndStoreAdmin(String last, String first, String pass, String username, Integer type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
@@ -128,10 +130,12 @@ public class AdminManager extends BaseManager {
             ad.setType(type);
             session.save(ad);
             session.getTransaction().commit();
+            return true;
         } catch (HibernateException he) {
             he.printStackTrace();
             if (trans != null)
                 trans.rollback();
+            return false;
         } finally {
             session.close();
         }

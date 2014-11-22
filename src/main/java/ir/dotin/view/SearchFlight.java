@@ -7,6 +7,7 @@ package ir.dotin.view;
 import ir.dotin.manager.CityManager;
 import ir.dotin.manager.FlightManager;
 import ir.dotin.model.City;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebPage;
@@ -31,51 +32,51 @@ public class SearchFlight extends WebPage implements Serializable {
     private String selected1 = "tehran";
 
     public SearchFlight() {
-//      List<City> ci= cityManager.list();
-        for (City city : cityManager.list()) {
-            System.out.println(city.getName());
-            list.add(city.getName());
-        }
-        cities = list;
-        add(new FeedbackPanel("feedback1"));
-
-        Form<?> form = new Form<Void>("form") {
-            @Override
-            protected void onSubmit() {
-                PageParameters params = new PageParameters();
-                params.add("orgin", selected);
-                params.add("destination", selected1);
-                setResponsePage(ReserveFlight.class,params);
-
+        Session session = getSession();
+        Boolean login = (Boolean) session.getAttribute("login");
+        if (login) {
+            add(new NavomaticBorder1("navomaticBorder1"));
+            for (City city : cityManager.list()) {
+                System.out.println(city.getName());
+                list.add(city.getName());
             }
-        };
-        add(form);
+            cities = list;
+            add(new FeedbackPanel("feedback1"));
 
-        final DropDownChoice<String> makes = new DropDownChoice<String>("makes",
-                new PropertyModel<String>(this, "selected1"), cities);
-        final DropDownChoice<String> city = new DropDownChoice<String>("city",
-                new PropertyModel<String>(this, "selected"), cities);
-        form.add(city);
-        form.add(makes);
+            Form<?> form = new Form<Void>("form") {
+                @Override
+                protected void onSubmit() {
 
-        makes.add(new AjaxFormComponentUpdatingBehavior("onchange")
-        {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target)
-            {
+                    PageParameters params = new PageParameters();
+                    params.add("orgin", selected);
+                    params.add("destination", selected1);
+                    setResponsePage(ReserveFlight.class, params);
+
+                }
+            };
+            add(form);
+
+            final DropDownChoice<String> makes = new DropDownChoice<String>("makes",
+                    new PropertyModel<String>(this, "selected1"), cities);
+            final DropDownChoice<String> city = new DropDownChoice<String>("city",
+                    new PropertyModel<String>(this, "selected"), cities);
+            form.add(city);
+            form.add(makes);
+
+            makes.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+                @Override
+                protected void onUpdate(AjaxRequestTarget target) {
 //                PageParameters params = new PageParameters();
 //                params.add("orgin", selected);
 //                params.add("destination", selected1);
 //                setResponsePage(ReserveFlight.class,params);
-            }
-        });
-        city.add(new AjaxFormComponentUpdatingBehavior("onchange")
-        {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target)
-            {
-            }
-        });
+                }
+            });
+            city.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+                @Override
+                protected void onUpdate(AjaxRequestTarget target) {
+                }
+            });
 //        final DropDownChoice<String> listSites1 = new DropDownChoice<String>(
 //                "sites2", new PropertyModel<String>(this, "selected1"), cities);
 
@@ -93,7 +94,6 @@ public class SearchFlight extends WebPage implements Serializable {
 //
 //        add(form2);
 //        form2.add(listSites1);
-
 
 
 //        final RadioGroup<Flight> group = new RadioGroup<Flight>("group", new Model<Flight>());
@@ -132,6 +132,7 @@ public class SearchFlight extends WebPage implements Serializable {
 //        group.add(persons);
 //
 //        add(new FeedbackPanel("feedback"));
+        }
     }
 }
 

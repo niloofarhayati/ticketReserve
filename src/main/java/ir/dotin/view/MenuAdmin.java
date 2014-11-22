@@ -5,6 +5,7 @@ package ir.dotin.view;
  */
 
 import ir.dotin.util.Constants;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -22,6 +23,8 @@ public class MenuAdmin extends WebPage implements Serializable {
                 public void onSubmit() {
                     Constants.LOGIN = false;
                     setResponsePage(Login.class);
+                    Session session = getSession();
+                   session.clear();
                 }
             });
             add(form);

@@ -17,18 +17,21 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.NumberTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class AddFlight extends WebPage implements Serializable {
+public class UpdateFlight extends WebPage implements Serializable {
     private TextField flightName;
     private NumberTextField flightCapacity;
     private Label orginLabel;
@@ -45,13 +48,14 @@ public class AddFlight extends WebPage implements Serializable {
     private  List<String> airLineList=new LinkedList<String>();
     private List<String> airPortList=new LinkedList<String>();
     private static List<String> cities=new LinkedList<String>();
+    private Integer fly;
 
-    public AddFlight() {
+    public UpdateFlight(final PageParameters parameters) {
         Session session = getSession();
         Boolean login = (Boolean) session.getAttribute("login");
         if (login) {
-            add(new NavomaticBorder("navomaticBorder1"));
-
+            add(new NavomaticBorder("navomaticBorder"));
+            fly = parameters.get("flight").toInt();
             flightCapacity = new NumberTextField("flightCapacity", new Model(0));
             flightName = new TextField("flightName", new Model(""));
             add(orginLabel = new Label("orginLabel", new Model("نام پرواز")));
@@ -72,18 +76,18 @@ public class AddFlight extends WebPage implements Serializable {
             Form<?> form = new Form<Void>("form") {
                 @Override
                 protected void onSubmit() {
-                    Flight flight = new Flight();
-                    flight.setName((String) flightName.getModelObject());
-                    flight.setCapacity((Integer) flightCapacity.getModelObject());
-                    flight.setOrgin_id(cityManager.findCity(orgin));
-                    flight.setDestination_id(cityManager.findCity(destination));
-                    flight.setAirport_id(airportManager.findAirport(airpo));
-                    flight.setAirLine_id(airlineManager.findAirline(airli));
-                    Boolean saved = flightManager.save(flight);
+                    String name = (String) flightName.getModelObject();
+                    Integer capacity = (Integer) flightCapacity.getModelObject();
+                    Integer orginID = cityManager.findCity(orgin);
+                    Integer destinationID = cityManager.findCity(destination);
+                    Integer airportID = airportManager.findAirport(airpo);
+                    Integer airlinID = airlineManager.findAirline(airli);
+                    Boolean saved = flightManager.update(fly, airlinID, name, airportID,
+                            capacity, orginID, destinationID);
                     flightCapacity.setModelObject(0);
                     flightName.setModelObject("");
                     if (saved) {
-                        info("پرواز با موفقیت اضافه شد");
+                        info("پرواز با موفقیت به روز رسانی شد");
                     } else
                         info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
                 }
