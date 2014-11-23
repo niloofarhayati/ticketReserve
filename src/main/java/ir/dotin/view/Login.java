@@ -7,6 +7,7 @@ package ir.dotin.view;
 import ir.dotin.manager.AdminManager;
 import ir.dotin.util.Constants;
 import org.apache.wicket.Session;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -15,11 +16,13 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 import java.io.Serializable;
 
 
 public class Login extends WebPage implements Serializable {
+
     private Label label;
     private Label username;
     private Label password;
@@ -29,6 +32,7 @@ public class Login extends WebPage implements Serializable {
 
     public Login() {
         //   add(new NavomaticBorder("navomaticBorder"));
+
         Form form = new Form("form");
         field = new TextField("field", new Model(""));
         field1 = new PasswordTextField("field1", new Model(""));

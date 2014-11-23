@@ -1,13 +1,14 @@
 package ir.dotin.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by niloofar on 11/18/14.
  */
 @Entity
 @Table(name = "ticket_Reserve")
-public class Reserve {
+public class Reserve implements Serializable {
     private static final long serialVersionUID = 1L;
 
 

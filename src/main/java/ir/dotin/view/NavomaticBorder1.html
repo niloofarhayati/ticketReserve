@@ -1,24 +1,30 @@
 <html>
+<head>
+    <wicket:link>
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    </wicket:link>
+</head>
 <body>
 <wicket:border>
     <p>
     <table>
         <tr>
             <td>
-                    <span wicket:id="navigationBorder">
+                <ul wicket:id="navigationBorder" class="nav nav-sidebar">
                       <p>
                           <wicket:link>
-                              <a href="SearchFlight.html"> جستجو و رزرو</a><br/>
-                              <a href="MenuUser.html"> بازگشت به منو اصلی</a><br/>
-
+                              <Li><a href="SearchFlight.html"> جستجو و رزرو</a></Li><br/>
+                              <Li> <a href="ViewReserves.html"> نمایش رزرو های کاربر   </a></Li><br/>
+                             <Li> <a href="MenuUser.html"> بازگشت به منو اصلی</a></Li><br/>
+                             
                           </wicket:link>
                       </p>
-                    </span>
+                    </ul>
             </td>
             <td>
-                    <span wicket:id="bodyBorder">
-                        <wicket:body/>
-                    </span>
+                <ul wicket:id="bodyBorder" class="nav nav-pills">
+                    <wicket:body/>
+                </ul>
             </td>
         </tr>
     </table>

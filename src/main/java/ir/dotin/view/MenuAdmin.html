@@ -1,11 +1,15 @@
 <html>
-<head><title>Echo Application</title></head>
+<head>
+    <wicket:link>
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    </wicket:link>
+</head>
 <body>
 <h1>منو</h1>
-<span wicket:id="navomaticBorder"></span>
+<ul wicket:id="navomaticBorder" class="nav nav-sidebar"></ul>
 
 <form wicket:id="form">
-    <input wicket:id="button" type="submit" value="خروج"/>
+    <button wicket:id="button" type="submit" class="btn btn-primary">sign out</button>
 </form>
 </body>
 </html>

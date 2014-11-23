@@ -1,15 +1,18 @@
 <html>
-<head><title>Echo Application</title></head>
+<head>
+    <wicket:link>
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    </wicket:link>
+</head>
 <body>
 <h1>Login</h1>
 
 <form wicket:id="form">
-    <p wicket:id="username">Fun Fun Fun</p>
-    <input wicket:id="field" type="text" size="20"/>
-
-    <p wicket:id="password">Fun Fun Fun</p>
-    <input wicket:id="field1" type="password" size="20"/>
-    <input wicket:id="button" type="submit" value="login"/>
+    <label wicket:id="username" class="sr-only">Fun Fun Fun</label>
+    <input wicket:id="field" type="text" class="form-control" size="40" required autofocus/>
+    <label wicket:id="password" class="sr-only">Fun Fun Fun</label>
+    <input wicket:id="field1" type="password" class="form-control" size="40"/>
+    <button wicket:id="button" type="submit" class="btn btn-primary" size="40">login</button>
 </form>
 <p wicket:id="message">Fun Fun Fun</p>
 </body>

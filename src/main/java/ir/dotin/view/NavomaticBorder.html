@@ -1,27 +1,34 @@
 <html>
+
+<head>
+    <wicket:link>
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    </wicket:link>
+</head>
 <body>
 <wicket:border>
     <p>
     <table>
         <tr>
             <td>
-                    <span wicket:id="navigationBorder">
+                    <ul wicket:id="navigationBorder" class="nav nav-sidebar">
                       <p>
                           <wicket:link>
-                              <a href="DeleteUser.html">حذف کاربر</a><br/>
-                              <a href="AddUser.html">ایجاد کاربر جدید</a><br/>
-                              <a href="ViewUsers.html">نمایش کاربران</a><br/>
-                              <a href="AddFlight.html">اضافه کردن پرواز جدید</a><br/>
-                              <a href="ViewFlights.html">نمایش پروازها</a><br/>
-                              <a href="MenuAdmin.html"> بازگشت به منو اصلی</a><br/>
+                              <li><a href="DeleteUser.html">حذف کاربر</a><br/></li>
+                              <li ><a href="AddUser.html">ایجاد کاربر جدید</a><br/></li>
+                              <li ><a href="ViewUsers.html">نمایش کاربران</a><br/></li>
+                              <li ><a href="AddFlight.html">اضافه کردن پرواز جدید</a><br/></li>
+                              <li ><a href="ViewFlights.html">نمایش پروازها</a><br/></li>
+                              <li  class="active">
+                                  <a href="MenuAdmin.html"> بازگشت به منو اصلی</a><br/></li>
                           </wicket:link>
                       </p>
-                    </span>
+                    </ul>
             </td>
             <td>
-                    <span wicket:id="bodyBorder">
+                    <ul wicket:id="bodyBorder" class="nav nav-pills">
                         <wicket:body/>
-                    </span>
+                    </ul>
             </td>
         </tr>
     </table>

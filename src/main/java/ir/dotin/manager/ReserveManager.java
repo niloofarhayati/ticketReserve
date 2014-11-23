@@ -30,11 +30,11 @@ public class ReserveManager extends BaseManager{
             session.close();
         }
     }
-    public List<Reserve> list() {
+    public List<Reserve> list(Integer id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
-            List<Reserve> l = session.createQuery("from  Reserve ").list();
+            List<Reserve> l = session.createQuery("from  Reserve where userID="+id).list();
             session.getTransaction().commit();
             return l;
         } catch (HibernateException he) {
