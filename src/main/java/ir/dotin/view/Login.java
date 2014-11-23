@@ -58,7 +58,7 @@ public class Login extends WebPage implements Serializable {
                         session.setAttribute("login",Constants.LOGIN);
                         PageParameters params = new PageParameters();
                         params.add("login", "true");
-                        setResponsePage(MenuAdmin.class, params);
+                        setResponsePage(new MenuAdmin());
                     } else if (!bo) {
                         label.setDefaultModelObject("login Successful");
                         Constants.LOGIN = true;

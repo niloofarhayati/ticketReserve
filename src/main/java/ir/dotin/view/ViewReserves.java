@@ -27,13 +27,14 @@ import java.io.Serializable;
 
 public class ViewReserves extends WebPage implements Serializable {
     ReserveManager reserveManager = new ReserveManager();
+    FlightManager flightManager=new FlightManager();
     Reserve reserve;
 
     public ViewReserves() {
         Session session = getSession();
         Boolean login = (Boolean) session.getAttribute("login");
         if (login) {
-            add(new NavomaticBorder("navomaticBorder"));
+            add(new NavomaticBorder1("navomaticBorder"));
             final RadioGroup<Reserve> group = new RadioGroup<Reserve>("group", new Model<Reserve>());
             Form<?> form = new Form("form") {
                 @Override
@@ -65,6 +66,7 @@ public class ViewReserves extends WebPage implements Serializable {
                         info("لطفا گزینه مورد نظر را ثبت یا انتخاب کنید");
                     else {
                         Boolean b = reserveManager.destroy(reserve.getId().toString(), Reserve.class);
+                        flightManager.UnReserve(reserve.getFlightID());
                         if (b) {
                             info("حذف با موفقیت  انجام شد");
                             setResponsePage(ViewReserves.class);

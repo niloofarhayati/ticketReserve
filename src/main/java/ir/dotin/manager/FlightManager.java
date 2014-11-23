@@ -60,6 +60,24 @@ public class FlightManager extends BaseManager {
             session.close();
         }
     }
+    public String UnReserve(Integer id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction trans = session.beginTransaction();
+        try {
+            Flight b = (Flight) session.get(Flight.class, id);
+                b.setCapacity(b.getCapacity() + 1);
+                session.update(b);
+                session.getTransaction().commit();
+                return "Success";
+        } catch (HibernateException he) {
+            he.printStackTrace();
+            if (trans != null)
+                trans.rollback();
+            return null;
+        } finally {
+            session.close();
+        }
+    }
 
     public List<Flight> list() {
         Session session = HibernateUtil.getSessionFactory().openSession();

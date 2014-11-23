@@ -10,16 +10,17 @@ import org.apache.wicket.markup.html.border.BorderPanel;
 import org.apache.wicket.markup.html.border.BoxBorder;
 import org.apache.wicket.markup.html.form.ListChoice;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigation;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.data.GridView;
 
-public class NavomaticBorder extends Border {
+public class NavomaticBorder extends Panel {
 
     public NavomaticBorder(final String componentName) {
         super(componentName);
 
-        addToBorder(new MarkupContainer("navigationBorder") {
+        add(new MarkupContainer("navigationBorder") {
         });
-        addToBorder(new MarkupContainer("bodyBorder") {
+        add(new MarkupContainer("bodyBorder") {
         });
     }
 
