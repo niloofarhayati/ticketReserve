@@ -1,0 +1,19 @@
+<html>
+<head>
+    <wicket:link>
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    </wicket:link>
+</head>
+<body>
+<h1>Login</h1>
+
+<form wicket:id="form">
+    <label wicket:id="username-label" class="sr-only">Username</label>
+    <input wicket:id="username-field" type="text" class="form-control" size="40" required autofocus/>
+    <label wicket:id="password-label" class="sr-only">Password</label>
+    <input wicket:id="password-field" type="password" class="form-control" size="40"/>
+    <button wicket:id="submit-button" type="submit" class="btn btn-primary" size="40">login</button>
+</form>
+<p wicket:id="message">Fun Fun Fun</p>
+</body>
+</html>

@@ -40,11 +40,11 @@
         <property name="hbm2ddl.auto">update</property>
 
         <!-- Mapping files -->
-        <mapping class="ir.dotin.model.User"/>
-        <mapping class="ir.dotin.model.Airline"/>
-        <mapping class="ir.dotin.model.Airport"/>
-        <mapping class="ir.dotin.model.City"/>
-        <mapping class="ir.dotin.model.Flight"/>
-        <mapping class="ir.dotin.model.Reserve"/>
+        <mapping class="ir.dotin.qc.ticketReserve.model.User"/>
+        <mapping class="ir.dotin.qc.ticketReserve.model.Airline"/>
+        <mapping class="ir.dotin.qc.ticketReserve.model.Airport"/>
+        <mapping class="ir.dotin.qc.ticketReserve.model.City"/>
+        <mapping class="ir.dotin.qc.ticketReserve.model.Flight"/>
+        <mapping class="ir.dotin.qc.ticketReserve.model.Reserve"/>
     </session-factory>
 </hibernate-configuration>
