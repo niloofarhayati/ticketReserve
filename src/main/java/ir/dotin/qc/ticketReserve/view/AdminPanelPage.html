@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <wicket:link>
+        <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    </wicket:link>
+</head>
+<body>
+<wicket:panel>
+    <p>
+    <table>
+        <tr>
+            <td>
+                    <ul wicket:id="list" class="nav nav-sidebar">
+                      <p>
+                          <wicket:link>
+                              <li><a href="DeleteUserPage.html">حذف کاربر</a><br/></li>
+                              <li ><a href="AddUserPage.html">ایجاد کاربر جدید</a><br/></li>
+                              <li ><a href="ViewUsersPage.html">نمایش کاربران</a><br/></li>
+                              <li ><a href="AddFlightPage.html">اضافه کردن پرواز جدید</a><br/></li>
+                              <li ><a href="ViewFlightsPage.html">نمایش پروازها</a><br/></li>
+                              <li  class="active">
+                                  <a href="MenuAdminPage.html"> بازگشت به منو اصلی</a><br/></li>
+                          </wicket:link>
+                      </p>
+                    </ul>
+            </td>
+            <td>
+                    <ul wicket:id="body" class="nav nav-pills">
+                    </ul>
+            </td>
+        </tr>
+    </table>
+    </p>
+</wicket:panel>
+</body>
+</html>

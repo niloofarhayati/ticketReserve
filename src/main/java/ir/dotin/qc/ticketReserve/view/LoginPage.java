@@ -18,7 +18,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import java.io.Serializable;
 
 
-public class Login extends WebPage implements Serializable {
+public class LoginPage extends WebPage implements Serializable {
 
     private TextField usernameField;
     private TextField passwordField;
@@ -26,7 +26,7 @@ public class Login extends WebPage implements Serializable {
 
     private UserGateway userGateway;
 
-    Login() {
+   public LoginPage() {
         userGateway = new UserGateway();
     }
 
@@ -37,7 +37,7 @@ public class Login extends WebPage implements Serializable {
         Form loginForm = new Form("form");
 
         Label usernameLabel;
-        add(usernameLabel = new Label("usernameLabel-label", new Model("username:")));
+        add(usernameLabel = new Label("username-label", new Model("username:")));
         loginForm.add(usernameLabel);
         usernameField = new TextField("username-field", new Model(""));
         loginForm.add(usernameField);
@@ -47,7 +47,7 @@ public class Login extends WebPage implements Serializable {
         passwordField = new PasswordTextField("password-field", new Model(""));
         loginForm.add(passwordField);
 
-        loginForm.add(new Button("button") {
+        loginForm.add(new Button("submit-button") {
             @Override
             public void onSubmit() {
                 String username = (String) usernameField.getModelObject();
@@ -56,12 +56,15 @@ public class Login extends WebPage implements Serializable {
                     Integer loginStatus = userGateway.Login(username, password);
                     if (userGateway.IsAdmin(loginStatus)) {
                         feedbackLabel.setDefaultModelObject("login Successful");
+//                        ExtendedSession extendedSession=ExtendedSession.get();
+//                        extendedSession.setUserID(loginStatus);
+//                        extendedSession.setLogined(true);
                         Session session = getSession();
                         session.setAttribute("userID", loginStatus);
                         session.setAttribute("login", true);
                         PageParameters params = new PageParameters();
                         params.add("login", "true");
-                        setResponsePage(new MenuAdmin());
+                        setResponsePage(new MenuAdminPage());
                     } else {
                         feedbackLabel.setDefaultModelObject("login Successful");
                         Session session = getSession();
@@ -69,7 +72,7 @@ public class Login extends WebPage implements Serializable {
                         session.setAttribute("login", true);
                         PageParameters params = new PageParameters();
                         params.add("login", "true");
-                        setResponsePage(MenuUser.class, params);
+                        setResponsePage(MenuUserPage.class, params);
                     }
                 } catch(Exception e) {
                     feedbackLabel.setDefaultModelObject("wrong username or password");

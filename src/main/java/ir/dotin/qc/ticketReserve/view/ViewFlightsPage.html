@@ -7,13 +7,13 @@
 </head>
 <body>
 <h1>نمایش پروازها</h1>
-<ul wicket:id="navomaticBorder" class="nav nav-sidebar"></ul>
+<ul wicket:id="adminPanel" class="nav nav-sidebar"></ul>
 <p>
 
 <p>
 
 <form wicket:id="form">
-        <span wicket:id="group">
+        <span wicket:id="flightRadioGroup">
             <table style="border: 2px dotted #fc0; width: 400px; padding: 5px;">
                 <tr>
                     <td valign="top">Select a person</td>
@@ -27,11 +27,11 @@
                                 <td><b>گنجایش</b></td>
 
                             </tr>
-                            <tr wicket:id="persons">
-                                <td><input type="radio" wicket:id="radio"/></td>
-                                <td><span wicket:id="id">[this is where id will be]</span></td>
-                                <td><span wicket:id="name">[this is where name will be]</span></td>
-                                <td><span wicket:id="lastName">[this is where lastname will be]</span></td>
+                            <tr wicket:id="flightListView">
+                                <td><input type="radio" wicket:id="flightRadio"/></td>
+                                <td><span wicket:id="name">[this is where id will be]</span></td>
+                                <td><span wicket:id="orgin_id">[this is where name will be]</span></td>
+                                <td><span wicket:id="destination_id">[this is where lastname will be]</span></td>
                                 <td><span wicket:id="capacity">[this is where id will be]</span></td>
                             </tr>
                         </table>

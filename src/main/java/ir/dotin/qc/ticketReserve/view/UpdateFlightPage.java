@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class UpdateFlight extends WebPage implements Serializable {
+public class UpdateFlightPage extends WebPage implements Serializable {
     private TextField flightName;
     private NumberTextField flightCapacity;
     private Label orginLabel;
@@ -43,17 +43,16 @@ public class UpdateFlight extends WebPage implements Serializable {
     private CityGateway cityGateway = new CityGateway();
     private AirlineGateway airlineGateway =new AirlineGateway();
     private AirportGateway airportGateway =new AirportGateway();
-    private List<String> list=new LinkedList<String>();
     private  List<String> airLineList=new LinkedList<String>();
     private List<String> airPortList=new LinkedList<String>();
     private static List<String> cities=new LinkedList<String>();
     private Integer fly;
 
-    public UpdateFlight(final PageParameters parameters) {
+    public UpdateFlightPage(final PageParameters parameters) {
         Session session = getSession();
         Boolean login = (Boolean) session.getAttribute("login");
         if (login) {
-            add(new AdminPanel("navomaticBorder"));
+            add(new AdminPanelPage("adminPanel"));
             fly = parameters.get("flight").toInt();
             flightCapacity = new NumberTextField("flightCapacity", new Model(0));
             flightName = new TextField("flightName", new Model(""));
@@ -61,7 +60,7 @@ public class UpdateFlight extends WebPage implements Serializable {
             add(destLabel = new Label("destLabel", new Model("ظرفیت")));
             for (City city : cityGateway.list()) {
                 System.out.println(city.getName());
-                list.add(city.getName());
+                cities.add(city.getName());
             }
             for (Airline airline : airlineGateway.list()) {
                 airLineList.add(airline.getName());
@@ -69,8 +68,6 @@ public class UpdateFlight extends WebPage implements Serializable {
             for (Airport airport : airportGateway.list()) {
                 airPortList.add(airport.getName());
             }
-            cities = list;
-
 
             Form<?> form = new Form<Void>("form") {
                 @Override
@@ -102,13 +99,13 @@ public class UpdateFlight extends WebPage implements Serializable {
             final DropDownChoice<String> airline = new DropDownChoice<String>("airline",
                     new PropertyModel<String>(this, "airli"), airLineList);
             form.add(org);
+            form.add(orginLabel);
             form.add(dest);
+            form.add(destLabel);
             form.add(airline);
             form.add(airport);
-            form.add(orginLabel);
-            form.add(flightCapacity);
-            form.add(destLabel);
             form.add(flightName);
+            form.add(flightCapacity);
 
             org.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override

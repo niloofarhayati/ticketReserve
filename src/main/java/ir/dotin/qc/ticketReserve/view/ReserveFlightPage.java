@@ -22,40 +22,40 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 
 
-public class ReserveFlight extends WebPage implements Serializable {
-    FlightGateway flightGateway =new FlightGateway();
-    ReserveGateway reserveGateway = new ReserveGateway();
-    public ReserveFlight(final PageParameters parameters) {
+public class ReserveFlightPage extends WebPage implements Serializable {
+    private FlightGateway flightGateway =new FlightGateway();
+    private ReserveGateway reserveGateway = new ReserveGateway();
+
+    public ReserveFlightPage(final PageParameters parameters) {
+
         Session session = getSession();
         Boolean login = (Boolean) session.getAttribute("login");
         if (login) {
-            List<Flight> result = new LinkedList<Flight>();
-            add(new UserPanel("navomaticBorder1"));
+            add(new UserPanelPage("userPanel"));
             String destination = parameters.get("destination").toString();
             String orgin = parameters.get("orgin").toString();
-            List<Flight> fi = flightGateway.flightList(destination, orgin);
-            final RadioGroup<Flight> group = new RadioGroup<Flight>("group", new Model<Flight>());
+            List<Flight> flightList = flightGateway.flightList(destination, orgin);
+            final RadioGroup<Flight> flightRadioGroup = new RadioGroup<Flight>("flightRadioGroup", new Model<Flight>());
             Form<?> form = new Form("form") {
                 @Override
                 protected void onSubmit() {
-                    Flight fi = new Flight();
-                    if (fi == null) {
+                    Flight flight = new Flight();
+                    if (flight == null) {
                         info("لطفا گزینه مورد نظر خود را انتخاب کنید");
                     } else {
-                        fi = (Flight) group.getDefaultModelObject();
-                        System.out.println(group.getId());
-                        String s = flightGateway.Reserve(fi.getId());
+                        flight = (Flight) flightRadioGroup.getDefaultModelObject();
+                        System.out.println(flightRadioGroup.getId());
+                        String s = flightGateway.Reserve(flight.getId());
                         if (s.equalsIgnoreCase("Success")) {
                             info("رزرو با موفقیت انجام شد ");
                             Reserve reserve = new Reserve();
-                            reserve.setFlightID(fi.getId());
+                            reserve.setFlightID(flight.getId());
                             Session session = getSession();
-                            Integer in = (Integer) session.getAttribute("USERID");
-                            reserve.setUserID(in);
+                            Integer userID = (Integer) session.getAttribute("USERID");
+                            reserve.setUserID(userID);
                             reserveGateway.save(reserve);
                         } else if (s.equalsIgnoreCase("Flight is Full")) {
                             info("‍‍‍‍‍ظرفیت پرواز مورد نظر به اتمام رسیده است");
@@ -67,26 +67,26 @@ public class ReserveFlight extends WebPage implements Serializable {
             };
 
             add(form);
-            form.add(group);
+            form.add(flightRadioGroup);
 
-            ListView<Flight> persons = new ListView<Flight>("persons", fi) {
+            ListView<Flight> flightListView = new ListView<Flight>("flightListView", flightList) {
 
                 @Override
                 protected void populateItem(ListItem<Flight> item) {
-                    item.add(new Radio<Flight>("radio", item.getModel()));
+                    item.add(new Radio<Flight>("flight_radio", item.getModel()));
                     item.add(new Label("id", new PropertyModel<String>(item.getDefaultModel(),
                             "id")));
-                    item.add(new Label("name",
+                    item.add(new Label("destination_id",
                             new PropertyModel<String>(item.getDefaultModel(), "destination_id")));
-                    item.add(new Label("lastName", new PropertyModel<String>(item.getDefaultModel(),
+                    item.add(new Label("orgin_id", new PropertyModel<String>(item.getDefaultModel(),
                             "orgin_id")));
-                    item.add(new Label("sth", new PropertyModel<String>(item.getDefaultModel(),
+                    item.add(new Label("name", new PropertyModel<String>(item.getDefaultModel(),
                             "name")));
                 }
 
             };
 
-            group.add(persons);
+            flightRadioGroup.add(flightListView);
 
             add(new FeedbackPanel("feedback"));
         }

@@ -13,16 +13,17 @@ import org.apache.wicket.markup.html.form.Form;
 import java.io.Serializable;
 
 
-public class MenuUser extends WebPage implements Serializable {
-    public MenuUser() {
-        add(new UserPanel("navomaticBorder1"));
-        if (Constants.LOGIN) {
+public class MenuUserPage extends WebPage implements Serializable {
+    public MenuUserPage() {
+        add(new UserPanelPage("userPanel"));
+        Session session = getSession();
+        Boolean login = (Boolean) session.getAttribute("login");
+        if (login) {
             Form form = new Form("form");
-            form.add(new Button("button") {
+            form.add(new Button("logoutButton") {
                 @Override
                 public void onSubmit() {
-                    Constants.LOGIN = false;
-                    setResponsePage(Login.class);
+                    setResponsePage(LoginPage.class);
                     Session session = getSession();
                    session.clear();
                 }

@@ -7,12 +7,12 @@
 </head>
 <body>
 <h1>نمایش کاربران</h1>
-<ul wicket:id="navomaticBorder" class="nav nav-sidebar"></ul>
+<ul wicket:id="adminPanel" class="nav nav-sidebar"></ul>
 
 <p>
 
 <form wicket:id="form">
-        <span wicket:id="group">
+        <span wicket:id="userRadioGroup">
             <table style="border: 2px dotted #fc0; width: 400px; padding: 5px;">
                 <tr>
                     <td valign="top">Select a person</td>
@@ -23,8 +23,8 @@
                                 <td><b>First Name</b></td>
                                 <td><b>Last Name</b></td>
                             </tr>
-                            <tr wicket:id="persons">
-                                <td><input type="radio" wicket:id="radio"/></td>
+                            <tr wicket:id="userListView">
+                                <td><input type="radio" wicket:id="radioUser"/></td>
                                 <td><span wicket:id="name">[this is where name will be]</span></td>
                                 <td><span wicket:id="lastName">[this is where lastname will be]</span></td>
                                 <td><span wicket:id="id">[this is where id will be]</span></td>

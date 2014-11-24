@@ -7,14 +7,14 @@ package ir.dotin.qc.ticketReserve.view;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 
-public class AdminPanel extends Panel {
+public class AdminPanelPage extends Panel {
 
-    public AdminPanel(final String componentName) {
+    public AdminPanelPage(final String componentName) {
         super(componentName);
 
-        add(new MarkupContainer("navigationBorder") {
+        add(new MarkupContainer("list") {
         });
-        add(new MarkupContainer("bodyBorder") {
+        add(new MarkupContainer("body") {
         });
     }
 

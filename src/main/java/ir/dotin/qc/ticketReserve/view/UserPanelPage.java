@@ -7,14 +7,14 @@ package ir.dotin.qc.ticketReserve.view;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
 
-public class UserPanel extends Border {
+public class UserPanelPage extends Border {
 
-    public UserPanel(final String componentName) {
+    public UserPanelPage(final String componentName) {
         super(componentName);
 
-        addToBorder(new MarkupContainer("navigationBorder") {
+        addToBorder(new MarkupContainer("list") {
         });
-        addToBorder(new MarkupContainer("bodyBorder") {
+        addToBorder(new MarkupContainer("body") {
         });
     }
 

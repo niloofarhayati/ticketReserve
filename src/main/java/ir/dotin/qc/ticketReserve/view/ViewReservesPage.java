@@ -23,40 +23,31 @@ import org.apache.wicket.model.PropertyModel;
 import java.io.Serializable;
 
 
-public class ViewReserves extends WebPage implements Serializable {
-    ReserveGateway reserveGateway = new ReserveGateway();
-    FlightGateway flightGateway =new FlightGateway();
-    Reserve reserve;
+public class ViewReservesPage extends WebPage implements Serializable {
+    private ReserveGateway reserveGateway;
+    private FlightGateway flightGateway ;
+    private Reserve reserve;
 
-    public ViewReserves() {
+    public ViewReservesPage() {
+        reserveGateway = new ReserveGateway();
+        flightGateway =new FlightGateway();
+    }
+        @Override
+        protected void onInitialize() {
+            super.onInitialize();
+
         Session session = getSession();
         Boolean login = (Boolean) session.getAttribute("login");
         if (login) {
-            add(new UserPanel("navomaticBorder"));
-            final RadioGroup<Reserve> group = new RadioGroup<Reserve>("group", new Model<Reserve>());
+            add(new UserPanelPage("userPanel"));
+            final RadioGroup<Reserve> reserveRadioGroup = new RadioGroup<Reserve>("reserveRadioGroup", new Model<Reserve>());
             Form<?> form = new Form("form") {
                 @Override
                 protected void onSubmit() {
-                    reserve = (Reserve) group.getDefaultModelObject();
-//
-//                info("selected person: " + group.getDefaultModelObjectAsString());
+                    reserve = (Reserve) reserveRadioGroup.getDefaultModelObject();
                 }
 
             };
-//            Button button1 = new Button("update") {
-//                @Override
-//                public void onSubmit() {
-//                    if(reserve==null)
-//                        info("لطفا گزینه مورد نظر را ثبت یا انتخاب کنید");
-//                    else {
-//                        PageParameters params = new PageParameters();
-//                        params.add("Reserve", reserve.getId());
-//                        setResponsePage(UpdateFlight.class, params);
-//                    }
-//                }
-//            };
-//            form.add(button1);
-
             Button button2 = new Button("delete") {
                 @Override
                 public void onSubmit() {
@@ -67,7 +58,7 @@ public class ViewReserves extends WebPage implements Serializable {
                         flightGateway.UnReserve(reserve.getFlightID());
                         if (b) {
                             info("حذف با موفقیت  انجام شد");
-                            setResponsePage(ViewReserves.class);
+                            setResponsePage(ViewReservesPage.class);
                         } else
                             info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
 
@@ -79,24 +70,24 @@ public class ViewReserves extends WebPage implements Serializable {
 
 
             add(form);
-            form.add(group);
-            Integer in = (Integer) session.getAttribute("USERID");
-            ListView<Reserve> persons = new ListView<Reserve>("persons", reserveGateway.list(in)) {
+            form.add(reserveRadioGroup);
+            Integer userID = (Integer) session.getAttribute("USERID");
+            ListView<Reserve> reserveListView = new ListView<Reserve>("reserveListView", reserveGateway.list(userID)) {
 
                 @Override
                 protected void populateItem(ListItem<Reserve> item) {
-                    item.add(new Radio<Reserve>("radio", item.getModel()));
+                    item.add(new Radio<Reserve>("reserveRadio", item.getModel()));
                     item.add(new Label("id", new PropertyModel<String>(item.getDefaultModel(),
                             "id")));
-                    item.add(new Label("name",
+                    item.add(new Label("userID",
                             new PropertyModel<String>(item.getDefaultModel(), "userID")));
-                    item.add(new Label("lastName", new PropertyModel<String>(item.getDefaultModel(),
+                    item.add(new Label("flightID", new PropertyModel<String>(item.getDefaultModel(),
                             "flightID")));
                 }
 
             };
 
-            group.add(persons);
+            reserveRadioGroup.add(reserveListView);
 
             add(new FeedbackPanel("feedback"));
         }

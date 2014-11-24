@@ -28,37 +28,49 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class AddFlight extends WebPage implements Serializable {
+public class AddFlightPage extends WebPage implements Serializable {
     private TextField flightName;
     private NumberTextField flightCapacity;
-    private Label orginLabel;
-    private Label destLabel;
-    private String orgin = "tehran";
-    private String destination = "tehran";
+    private String orgin ;
+    private String destination;
     private String airpo;
     private String airli;
-    private FlightGateway flightGateway = new FlightGateway();
-    private CityGateway cityGateway = new CityGateway();
-    private AirlineGateway airlineGateway =new AirlineGateway();
-    private AirportGateway airportGateway =new AirportGateway();
-    private List<String> list=new LinkedList<String>();
-    private  List<String> airLineList=new LinkedList<String>();
-    private List<String> airPortList=new LinkedList<String>();
-    private static List<String> cities=new LinkedList<String>();
+    private FlightGateway flightGateway ;
+    private CityGateway cityGateway;
+    private AirlineGateway airlineGateway;
+    private AirportGateway airportGateway ;
+    private  List<String> airLineList;
+    private List<String> airPortList;
+    private static List<String> cities;
 
-    public AddFlight() {
+    public AddFlightPage() {
+        airLineList=new LinkedList<String>();
+        airPortList=new LinkedList<String>();
+        cities=new LinkedList<String>();
+        airportGateway =new AirportGateway();
+        airlineGateway =new AirlineGateway();
+        cityGateway = new CityGateway();
+        flightGateway = new FlightGateway();
+        orgin = "tehran";
+        destination = "tehran";
+    }
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
         Session session = getSession();
         Boolean login = (Boolean) session.getAttribute("login");
         if (login) {
-            add(new AdminPanel("navomaticBorder1"));
+            add(new AdminPanelPage("AdminPanel"));
 
             flightCapacity = new NumberTextField("flightCapacity", new Model(0));
             flightName = new TextField("flightName", new Model(""));
-            add(orginLabel = new Label("orginLabel", new Model("نام پرواز")));
-            add(destLabel = new Label("destLabel", new Model("ظرفیت")));
+            Label nameLabel;
+            add(nameLabel = new Label("name_label", new Model("نام پرواز")));
+            Label capacityLabel;
+            add(capacityLabel = new Label("capacity_label", new Model("ظرفیت")));
             for (City city : cityGateway.list()) {
                 System.out.println(city.getName());
-                list.add(city.getName());
+                cities.add(city.getName());
             }
             for (Airline airline : airlineGateway.list()) {
                 airLineList.add(airline.getName());
@@ -66,7 +78,6 @@ public class AddFlight extends WebPage implements Serializable {
             for (Airport airport : airportGateway.list()) {
                 airPortList.add(airport.getName());
             }
-            cities = list;
 
 
             Form<?> form = new Form<Void>("form") {
@@ -102,9 +113,9 @@ public class AddFlight extends WebPage implements Serializable {
             form.add(dest);
             form.add(airline);
             form.add(airport);
-            form.add(orginLabel);
+            form.add(nameLabel);
             form.add(flightCapacity);
-            form.add(destLabel);
+            form.add(capacityLabel);
             form.add(flightName);
 
             org.add(new AjaxFormComponentUpdatingBehavior("onchange") {
@@ -119,6 +130,14 @@ public class AddFlight extends WebPage implements Serializable {
             });
             add(new FeedbackPanel("feedback1"));
         }
+    }
+
+    public void setAirpo(String airpo) {
+        this.airpo = airpo;
+    }
+
+    public void setAirli(String airli) {
+        this.airli = airli;
     }
 }
 

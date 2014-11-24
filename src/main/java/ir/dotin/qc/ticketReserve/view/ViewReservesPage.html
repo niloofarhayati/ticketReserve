@@ -6,32 +6,31 @@
     </wicket:link>
 </head>
 <body>
-<h1> نمایش پروازها</h1>
-<ul wicket:id="navomaticBorder1" class="nav nav-sidebar"></ul>
+<h1>نمایش پروازها</h1>
+<ul wicket:id="userPanel" class="nav nav-sidebar"></ul>
 <p>
 
 <p>
 
 <form wicket:id="form">
-        <span wicket:id="group">
-            <table style="border: 2px dotted #fc0; width: 600px; padding: 6px;">
+        <span wicket:id="reserveRadioGroup">
+            <table style="border: 2px dotted #fc0; width: 400px; padding: 5px;">
                 <tr>
-                    <td valign="top">برای رزرو پرواز مورد نظر خود را انتخاب کنید</td>
+                    <td valign="top"> </td>
                     <td>
                         <table cellspacing="0" cellpadding="2">
                             <tr>
                                 <td><b>انتخاب</b></td>
-                                <td><b> پرواز</b></td>
-                                <td><b>مبدا</b></td>
-                                <td><b>مقصد</b></td>
                                 <td><b>شماره</b></td>
+                                <td><b>شماره رزرو گر</b></td>
+                                <td><b>شماره پرواز</b></td>
+
                             </tr>
-                            <tr wicket:id="persons">
-                                <td><input type="radio" wicket:id="radio"/></td>
-                                <td><span wicket:id="name">[this is where name will be]</span></td>
-                                <td><span wicket:id="lastName">[this is where lastname will be]</span></td>
+                            <tr wicket:id="reserveListView">
+                                <td><input type="radio" wicket:id="reserveRadio"/></td>
                                 <td><span wicket:id="id">[this is where id will be]</span></td>
-                                <td><span wicket:id="sth">[this is where name will be]</span></td>
+                                <td><span wicket:id="userID">[this is where name will be]</span></td>
+                                <td><span wicket:id="flightID">[this is where lastname will be]</span></td>
                             </tr>
                         </table>
                   <span valign="top">
@@ -40,11 +39,14 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <input type="submit" value="رزرو"/>
+                        <input type="submit" value=" ثبت انتخاب"/>
                     </td>
                 </tr>
             </table>
         </span>
+    <td colspan="2" align="center">
+    <input wicket:id="delete" type="submit" value="حذف" />
+    </td>
 </form>
 <span wicket:id="feedback">feedbackmessages will be put here</span>
 </p>

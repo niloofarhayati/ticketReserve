@@ -24,22 +24,27 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class ViewUsers extends WebPage implements Serializable {
-    UserGateway am = new UserGateway();
-    List<User> list;
+public class ViewUsersPage extends WebPage implements Serializable {
+    UserGateway userGateway = new UserGateway();
+    List<User> userList;
     User user;
 
-    public ViewUsers() {
+    public ViewUsersPage() {
+    }
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
         Session session = getSession();
         Boolean login = (Boolean) session.getAttribute("login");
         if (login) {
-            add(new AdminPanel("navomaticBorder"));
-            final RadioGroup<User> group = new RadioGroup<User>("group", new Model<User>());
+            add(new AdminPanelPage("adminPanel"));
+            final RadioGroup<User> userRadioGroup = new RadioGroup<User>("userRadioGroup", new Model<User>());
             Form<?> form = new Form("form") {
                 @Override
                 protected void onSubmit() {
-                    user = (User) group.getDefaultModelObject();
-                   // info("selected person: " + group.getDefaultModelObjectAsString());
+                    user = (User) userRadioGroup.getDefaultModelObject();
+                   // info("selected person: " + userRadioGroup.getDefaultModelObjectAsString());
                 }
             };
             Button button1 = new Button("update") {
@@ -51,7 +56,7 @@ public class ViewUsers extends WebPage implements Serializable {
                     else {
                         PageParameters params = new PageParameters();
                         params.add("user", user.getId());
-                        setResponsePage(UpdateUser.class, params);
+                        setResponsePage(UpdateUserPage.class, params);
                     }
                 }
             };
@@ -63,10 +68,10 @@ public class ViewUsers extends WebPage implements Serializable {
                     if (user == null) {
                         info("لطفا گزینه مورد نظر خود را انتخاب کنید");
                     } else {
-                        Boolean b = am.destroy(user.getId().toString(), User.class);
+                        Boolean b = userGateway.destroy(user.getId().toString(), User.class);
                         if (b) {
                             info("حذف با موفقیت  انجام شد");
-                            setResponsePage(ViewUsers.class);
+                            setResponsePage(ViewUsersPage.class);
                         } else
                             info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
 
@@ -77,12 +82,12 @@ public class ViewUsers extends WebPage implements Serializable {
             form.add(button2);
 
             add(form);
-            form.add(group);
-            ListView<User> persons = new ListView<User>("persons", am.list()) {
+            form.add(userRadioGroup);
+            ListView<User> userListView = new ListView<User>("userListView", userGateway.list()) {
 
                 @Override
                 protected void populateItem(ListItem<User> item) {
-                    item.add(new Radio<User>("radio", item.getModel()));
+                    item.add(new Radio<User>("radioUser", item.getModel()));
                     item.add(new Label("id", new PropertyModel<String>(item.getDefaultModel(),
                             "id")));
                     item.add(new Label("name",
@@ -93,48 +98,9 @@ public class ViewUsers extends WebPage implements Serializable {
 
             };
 
-            group.add(persons);
+            userRadioGroup.add(userListView);
 
             add(new FeedbackPanel("feedback"));
         }
     }
 }
-//        add(new NavomaticBorder("navomaticBorder"));
-//        final IDataProvider<User> li= new CatapultListDataProvider(adminManager.list());
-//
-//        DataView<User> dataView=new DataView<User>("rows",li,10l){
-//            @Override protected void populateItem(Item<User> item){
-//                final User user=item.getModelObject();
-//                item.setModel(new CompoundPropertyModel<User>(user));
-//                item.add(new Label("id"));
-//                item.add(new Label("first_name"));
-//                item.add(new Label("last_name"));
-//                item.add(new Label("username"));
-//                item.add(new Link<User>("delete",item.getModel()){
-//                             @Override
-//                             public void onClick(){
-//                                 adminManager.destroy(user.getId().toString());
-//                             }
-//                         }
-//                );
-//            }
-//        }
-//                ;
-//        add(dataView);
-//       // add(new PagingNavigator("footerPaginator",dataView));
-//    }
-//
-////        add(new ListView<User>("rows",li)
-////        {
-////            public void populateItem(ListItem<User> item)
-////            {
-////                int i=0;
-////                item.add(new Label("fullName",
-////                        new PropertyModel(item.getModel(),"username")),new Label("fullName2",
-////                        new PropertyModel(item.getModel(),"username")));
-////                //item= (ListItem<User>) adminManager.list();
-////                i++;
-////
-////            }
-////        });}
-//  }

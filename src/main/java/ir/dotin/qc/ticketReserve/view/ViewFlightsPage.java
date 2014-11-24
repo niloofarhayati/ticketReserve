@@ -23,26 +23,29 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import java.io.Serializable;
 
 
-public class ViewFlights extends WebPage implements Serializable {
-    FlightGateway flightGateway = new FlightGateway();
-    Flight flight;
+public class ViewFlightsPage extends WebPage implements Serializable {
+    private FlightGateway flightGateway ;
+    private Flight flight;
 
-    public ViewFlights() {
+    public ViewFlightsPage() {
+        flightGateway = new FlightGateway();
+    }
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
         Session session = getSession();
         Boolean login = (Boolean) session.getAttribute("login");
         if (login) {
-            add(new AdminPanel("navomaticBorder"));
-            final RadioGroup<Flight> group = new RadioGroup<Flight>("group", new Model<Flight>());
+            add(new AdminPanelPage("adminPanel"));
+            final RadioGroup<Flight> flightRadioGroup = new RadioGroup<Flight>("flightRadioGroup", new Model<Flight>());
             Form<?> form = new Form("form") {
                 @Override
                 protected void onSubmit() {
-                    flight = (Flight) group.getDefaultModelObject();
-//
-//                info("selected person: " + group.getDefaultModelObjectAsString());
+                    flight = (Flight) flightRadioGroup.getDefaultModelObject();
                 }
 
             };
-            Button button1 = new Button("update") {
+            form.add(new Button("update") {
                 @Override
                 public void onSubmit() {
                     if(flight==null)
@@ -50,11 +53,10 @@ public class ViewFlights extends WebPage implements Serializable {
                     else {
                         PageParameters params = new PageParameters();
                         params.add("flight", flight.getId());
-                        setResponsePage(UpdateFlight.class, params);
+                        setResponsePage(UpdateFlightPage.class, params);
                     }
                 }
-            };
-            form.add(button1);
+            });
 
             Button button2 = new Button("delete") {
                 @Override
@@ -65,7 +67,7 @@ public class ViewFlights extends WebPage implements Serializable {
                         Boolean b = flightGateway.destroy(flight.getId().toString(), Flight.class);
                         if (b) {
                             info("حذف با موفقیت  انجام شد");
-                            setResponsePage(ViewFlights.class);
+                            setResponsePage(ViewFlightsPage.class);
                         } else
                             info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
 
@@ -77,17 +79,17 @@ public class ViewFlights extends WebPage implements Serializable {
 
 
             add(form);
-            form.add(group);
-            ListView<Flight> persons = new ListView<Flight>("persons", flightGateway.list()) {
+            form.add(flightRadioGroup);
+            ListView<Flight> flightListView = new ListView<Flight>("flightListView", flightGateway.list()) {
 
                 @Override
                 protected void populateItem(ListItem<Flight> item) {
-                    item.add(new Radio<Flight>("radio", item.getModel()));
-                    item.add(new Label("id", new PropertyModel<String>(item.getDefaultModel(),
+                    item.add(new Radio<Flight>("flightRadio", item.getModel()));
+                    item.add(new Label("name", new PropertyModel<String>(item.getDefaultModel(),
                             "name")));
-                    item.add(new Label("name",
+                    item.add(new Label("orgin_id",
                             new PropertyModel<String>(item.getDefaultModel(), "orgin_id")));
-                    item.add(new Label("lastName", new PropertyModel<String>(item.getDefaultModel(),
+                    item.add(new Label("destination_id", new PropertyModel<String>(item.getDefaultModel(),
                             "destination_id")));
                     item.add(new Label("capacity", new PropertyModel<String>(item.getDefaultModel(),
                             "capacity")));
@@ -95,7 +97,7 @@ public class ViewFlights extends WebPage implements Serializable {
 
             };
 
-            group.add(persons);
+            flightRadioGroup.add(flightListView);
 
             add(new FeedbackPanel("feedback"));
         }
