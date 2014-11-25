@@ -1,4 +1,4 @@
-package ir.dotin.qc.ticketReserve.view;
+package ir.dotin.qc.ticketReserve.viewFlight;
 
 /**
  * Created by niloofar on 11/8/14.
@@ -6,6 +6,8 @@ package ir.dotin.qc.ticketReserve.view;
 
 import ir.dotin.qc.ticketReserve.gateway.CityGateway;
 import ir.dotin.qc.ticketReserve.model.City;
+import ir.dotin.qc.ticketReserve.viewUtils.ExtendedSession;
+import ir.dotin.qc.ticketReserve.viewComponent.UserPanelPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebPage;

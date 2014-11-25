@@ -1,9 +1,11 @@
-package ir.dotin.qc.ticketReserve.view;
+package ir.dotin.qc.ticketReserve.viewComponent;
 
 /**
  * Created by niloofar on 11/8/14.
  */
 
+import ir.dotin.qc.ticketReserve.viewUtils.ExtendedSession;
+import ir.dotin.qc.ticketReserve.viewUser.LoginPage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
@@ -11,16 +13,16 @@ import org.apache.wicket.markup.html.form.Form;
 import java.io.Serializable;
 
 
-public class MenuUserPage extends WebPage implements Serializable {
-    public MenuUserPage() {
-       add(new UserPanelPage("userPanel"));
+public class MenuAdminPage extends WebPage implements Serializable {
+    public MenuAdminPage() {
+        add(new AdminPanelPage("adminPanel"));
 //        Session session = getSession();
 //        Boolean login = (Boolean) session.getAttribute("login");
         ExtendedSession extendedSession=ExtendedSession.get();
         Boolean login=extendedSession.getLogined();
         if (login) {
-            Form menuUserForm = new Form("menuUserForm");
-            menuUserForm.add(new Button("logoutButton") {
+            Form menuAdminForm = new Form("menuAdminForm");
+            menuAdminForm.add(new Button("logoutButton") {
                 @Override
                 public void onSubmit() {
                     setResponsePage(LoginPage.class);
@@ -28,7 +30,8 @@ public class MenuUserPage extends WebPage implements Serializable {
                     extendedSession.clear();
                 }
             });
-            add(menuUserForm);
+            add(menuAdminForm);
         }
     }
+
 }
