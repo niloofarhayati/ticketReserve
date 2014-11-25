@@ -6,7 +6,6 @@ package ir.dotin.qc.ticketReserve.view;
 
 import ir.dotin.qc.ticketReserve.gateway.UserGateway;
 import ir.dotin.qc.ticketReserve.model.User;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -40,7 +39,7 @@ public class ViewUsersPage extends WebPage implements Serializable {
         if (login) {
             add(new AdminPanelPage("adminPanel"));
             final RadioGroup<User> userRadioGroup = new RadioGroup<User>("userRadioGroup", new Model<User>());
-            Form<?> form = new Form("form") {
+            Form<?> viewUserForm = new Form("viewUserForm") {
                 @Override
                 protected void onSubmit() {
                     user = (User) userRadioGroup.getDefaultModelObject();
@@ -59,7 +58,7 @@ public class ViewUsersPage extends WebPage implements Serializable {
                     }
                 }
             };
-            form.add(updateButton);
+            viewUserForm.add(updateButton);
 
             Button deleteButton = new Button("delete") {
                 @Override
@@ -83,10 +82,10 @@ public class ViewUsersPage extends WebPage implements Serializable {
                 }
             };
             deleteButton.setDefaultFormProcessing(false);
-            form.add(deleteButton);
+            viewUserForm.add(deleteButton);
 
-            add(form);
-            form.add(userRadioGroup);
+            add(viewUserForm);
+            viewUserForm.add(userRadioGroup);
             ListView<User> userListView = new ListView<User>("userListView", userGateway.list()) {
 
                 @Override

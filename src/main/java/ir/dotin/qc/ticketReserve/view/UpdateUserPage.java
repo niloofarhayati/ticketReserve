@@ -39,7 +39,7 @@ public class UpdateUserPage extends WebPage implements Serializable {
         if (login) {
             final Integer in = parameters.get("user").toInt();
             add(new AdminPanelPage("adminPanel"));
-                Form form = new Form("form");
+                Form updateUserForm = new Form("updateUserForm");
                 usernameFiled = new TextField("username_filed", new Model(""));
                 add(username = new Label("username", new Model("username")));
                 passwordField = new TextField("password_field", new Model(""));
@@ -50,17 +50,17 @@ public class UpdateUserPage extends WebPage implements Serializable {
                 add(lastName = new Label("lastName", new Model("last Name")));
                 typeField = new NumberTextField("type_field", new Model(1));
                 add(type = new Label("type", new Model("type")));
-                form.add(usernameFiled);
-                form.add(username);
-                form.add(passwordField);
-                form.add(password);
-                form.add(firstNameField);
-                form.add(firstName);
-                form.add(lastNameField);
-                form.add(lastName);
-                form.add(typeField);
-                form.add(type);
-                form.add(new Button("button") {
+                updateUserForm.add(usernameFiled);
+                updateUserForm.add(username);
+                updateUserForm.add(passwordField);
+                updateUserForm.add(password);
+                updateUserForm.add(firstNameField);
+                updateUserForm.add(firstName);
+                updateUserForm.add(lastNameField);
+                updateUserForm.add(lastName);
+                updateUserForm.add(typeField);
+                updateUserForm.add(type);
+                updateUserForm.add(new Button("updateButton") {
                     @Override
                     public void onSubmit() {
                         try {
@@ -80,14 +80,13 @@ public class UpdateUserPage extends WebPage implements Serializable {
                             firstNameField.setModelObject("");
                             lastNameField.setModelObject("");
                             typeField.setModelObject(1);
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                             info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
                         }
                     }
                 });
-                add(form);
+                add(updateUserForm);
                 add(message = new Label("message", new Model("")));
         }
     }

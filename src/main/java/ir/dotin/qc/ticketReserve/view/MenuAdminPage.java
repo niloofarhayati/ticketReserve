@@ -19,16 +19,16 @@ public class MenuAdminPage extends WebPage implements Serializable {
         ExtendedSession extendedSession=ExtendedSession.get();
         Boolean login=extendedSession.getLogined();
         if (login) {
-            Form form = new Form("form");
-            form.add(new Button("logoutButton") {
+            Form menuAdminForm = new Form("menuAdminForm");
+            menuAdminForm.add(new Button("logoutButton") {
                 @Override
                 public void onSubmit() {
                     setResponsePage(LoginPage.class);
-                    ExtendedSession extendedSession=ExtendedSession.get();
-                   extendedSession.clear();
+                    ExtendedSession extendedSession = ExtendedSession.get();
+                    extendedSession.clear();
                 }
             });
-            add(form);
+            add(menuAdminForm);
         }
     }
 

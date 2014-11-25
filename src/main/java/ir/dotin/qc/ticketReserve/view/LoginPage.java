@@ -5,7 +5,6 @@ package ir.dotin.qc.ticketReserve.view;
  */
 
 import ir.dotin.qc.ticketReserve.gateway.UserGateway;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -55,19 +54,16 @@ public class LoginPage extends WebPage implements Serializable {
                     Integer loginStatus = userGateway.Login(username, password);
                     if (userGateway.IsAdmin(loginStatus)) {
                         feedbackLabel.setDefaultModelObject("login Successful");
-//                        ExtendedSession.get().setUserID(loginStatus);
-//                        ExtendedSession.get().setLogined(true);
-                        Session session = getSession();
-                        session.setAttribute("userID", loginStatus);
-                        session.setAttribute("login", true);
+                        ExtendedSession.get().setUserID(loginStatus);
+                        ExtendedSession.get().setLogined(true);
+//                        Session session = getSession();
+//                        session.setAttribute("userID", loginStatus);
+//                        session.setAttribute("login", true);
                         setResponsePage(new MenuAdminPage());
                     } else {
                         feedbackLabel.setDefaultModelObject("login Successful");
-//                        ExtendedSession.get().setUserID(loginStatus);
-//                        ExtendedSession.get().setLogined(true);
-                        Session session = getSession();
-                        session.setAttribute("userID", loginStatus);
-                        session.setAttribute("login", true);
+                        ExtendedSession.get().setUserID(loginStatus);
+                        ExtendedSession.get().setLogined(true);
                         setResponsePage(MenuUserPage.class);
                     }
                 } catch(Exception e) {

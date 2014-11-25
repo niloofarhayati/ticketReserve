@@ -30,18 +30,18 @@ public class DeleteUserPage extends WebPage implements Serializable {
         ExtendedSession extendedSession=ExtendedSession.get();
         Boolean login=extendedSession.getLogined();
         if (login) {
-            Form form = new Form("form");
+            Form deleteUserForm = new Form("deleteUserForm");
             userNameField = new TextField("username_field", new Model(""));
             add(username = new Label("username", new Model("username")));
-            form.add(userNameField);
-            form.add(username);
-            form.add(new Button("deleteUserButton") {
+            deleteUserForm.add(userNameField);
+            deleteUserForm.add(username);
+            deleteUserForm.add(new Button("deleteUserButton") {
                 @Override
                 public void onSubmit() {
                     try {
                         String username = (String) userNameField.getModelObject();
                         Integer in = userGateway.findID(username);
-                        if(in!=0) {
+                        if (in != 0) {
                             Boolean b = userGateway.destroy(in.toString(), User.class);
                             if (b) {
                                 message.setDefaultModelObject("درخواست شما با موفقیت انجام شد");
@@ -56,7 +56,7 @@ public class DeleteUserPage extends WebPage implements Serializable {
                     }
                 }
             });
-            add(form);
+            add(deleteUserForm);
             add(message = new Label("message", new Model("")));
         }
     }

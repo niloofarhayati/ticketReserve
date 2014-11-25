@@ -83,7 +83,7 @@ public class AddFlightPage extends WebPage implements Serializable {
             }
 
 
-            Form<?> form = new Form<Void>("form") {
+            Form<?> addFlightForm = new Form<Void>("addFlightForm") {
                 @Override
                 protected void onSubmit() {
                     try {
@@ -109,7 +109,7 @@ public class AddFlightPage extends WebPage implements Serializable {
 
                 }
             };
-            add(form);
+            add(addFlightForm);
 
             final DropDownChoice<String> org = new DropDownChoice<String>("org",
                     new PropertyModel<String>(this, "orgin"), cities);
@@ -119,14 +119,14 @@ public class AddFlightPage extends WebPage implements Serializable {
                     new PropertyModel<String>(this, "airpo"), airPortList);
             final DropDownChoice<String> airline = new DropDownChoice<String>("airline",
                     new PropertyModel<String>(this, "airli"), airLineList);
-            form.add(org);
-            form.add(dest);
-            form.add(airline);
-            form.add(airport);
-            form.add(nameLabel);
-            form.add(flightCapacity);
-            form.add(capacityLabel);
-            form.add(flightName);
+            addFlightForm.add(org);
+            addFlightForm.add(dest);
+            addFlightForm.add(airline);
+            addFlightForm.add(airport);
+            addFlightForm.add(nameLabel);
+            addFlightForm.add(flightCapacity);
+            addFlightForm.add(capacityLabel);
+            addFlightForm.add(flightName);
 
             org.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override

@@ -37,17 +37,17 @@ public class ViewFlightsPage extends WebPage implements Serializable {
         if (login) {
             add(new AdminPanelPage("adminPanel"));
             final RadioGroup<Flight> flightRadioGroup = new RadioGroup<Flight>("flightRadioGroup", new Model<Flight>());
-            Form<?> form = new Form("form") {
+            Form<?> viewFlightForm = new Form("viewFlightForm") {
                 @Override
                 protected void onSubmit() {
                     flight = (Flight) flightRadioGroup.getDefaultModelObject();
                 }
 
             };
-            form.add(new Button("update") {
+            viewFlightForm.add(new Button("update") {
                 @Override
                 public void onSubmit() {
-                    if(flight==null)
+                    if (flight == null)
                         info("لطفا گزینه مورد نظر را ثبت یا انتخاب کنید");
                     else {
                         PageParameters params = new PageParameters();
@@ -79,11 +79,11 @@ public class ViewFlightsPage extends WebPage implements Serializable {
                 }
             };
             deleteButton.setDefaultFormProcessing(false);
-            form.add(deleteButton);
+            viewFlightForm.add(deleteButton);
 
 
-            add(form);
-            form.add(flightRadioGroup);
+            add(viewFlightForm);
+            viewFlightForm.add(flightRadioGroup);
             ListView<Flight> flightListView = new ListView<Flight>("flightListView", flightGateway.list()) {
 
                 @Override

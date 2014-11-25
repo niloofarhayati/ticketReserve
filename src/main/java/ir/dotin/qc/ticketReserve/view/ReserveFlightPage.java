@@ -40,7 +40,7 @@ public class ReserveFlightPage extends WebPage implements Serializable {
             String orgin = parameters.get("orgin").toString();
             List<Flight> flightList = flightGateway.flightList(destination, orgin);
             final RadioGroup<Flight> flightRadioGroup = new RadioGroup<Flight>("flightRadioGroup", new Model<Flight>());
-            Form<?> form = new Form("form") {
+            Form<?> reserveFlightForm = new Form("reserveFlightForm") {
                 @Override
                 protected void onSubmit() {
                     Flight flight = new Flight();
@@ -72,8 +72,8 @@ public class ReserveFlightPage extends WebPage implements Serializable {
                 }
             };
 
-            add(form);
-            form.add(flightRadioGroup);
+            add(reserveFlightForm);
+            reserveFlightForm.add(flightRadioGroup);
 
             ListView<Flight> flightListView = new ListView<Flight>("flightListView", flightList) {
 

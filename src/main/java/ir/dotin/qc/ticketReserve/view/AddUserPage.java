@@ -47,7 +47,7 @@ public class AddUserPage extends WebPage implements Serializable {
         ExtendedSession extendedSession=ExtendedSession.get();
         Boolean login=extendedSession.getLogined();
         if (login) {
-            Form form = new Form("form");
+            Form addUserForm = new Form("addUserForm");
             usernameFiled = new TextField("username_field", new Model(""));
             add(username = new Label("username", new Model("username")));
             passwordField = new TextField("password_field", new Model(""));
@@ -58,17 +58,17 @@ public class AddUserPage extends WebPage implements Serializable {
             add(lastName = new Label("lastName", new Model("last Name")));
             typeField = new NumberTextField("type_field", new Model(1));
             add(type = new Label("type", new Model("type")));
-            form.add(usernameFiled);
-            form.add(username);
-            form.add(passwordField);
-            form.add(password);
-            form.add(firstNameField);
-            form.add(firstName);
-            form.add(lastNameField);
-            form.add(lastName);
-            form.add(typeField);
-            form.add(type);
-            form.add(new Button("addUserButton") {
+            addUserForm.add(usernameFiled);
+            addUserForm.add(username);
+            addUserForm.add(passwordField);
+            addUserForm.add(password);
+            addUserForm.add(firstNameField);
+            addUserForm.add(firstName);
+            addUserForm.add(lastNameField);
+            addUserForm.add(lastName);
+            addUserForm.add(typeField);
+            addUserForm.add(type);
+            addUserForm.add(new Button("addUserButton") {
                 @Override
                 public void onSubmit() {
                     try {
@@ -101,7 +101,7 @@ public class AddUserPage extends WebPage implements Serializable {
                     }
                 }
             });
-            add(form);
+            add(addUserForm);
             add(message = new Label("message", new Model("")));
         }
     }

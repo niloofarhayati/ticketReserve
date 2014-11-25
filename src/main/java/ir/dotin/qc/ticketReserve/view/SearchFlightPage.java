@@ -51,7 +51,7 @@ public class SearchFlightPage extends WebPage implements Serializable {
             }
             add(new FeedbackPanel("feedback1"));
 
-            Form<?> form = new Form<Void>("form") {
+            Form<?> searchFlightForm = new Form<Void>("searchFlightForm") {
                 @Override
                 protected void onSubmit() {
 
@@ -62,14 +62,14 @@ public class SearchFlightPage extends WebPage implements Serializable {
 
                 }
             };
-            add(form);
+            add(searchFlightForm);
 
             final DropDownChoice<String> cityOrgin = new DropDownChoice<String>("cityOrgin",
                     new PropertyModel<String>(this, "selectedOrgin"), cities);
             final DropDownChoice<String> cityDestination = new DropDownChoice<String>("cityDestination",
                     new PropertyModel<String>(this, "selectedDestination"), cities);
-            form.add(cityDestination);
-            form.add(cityOrgin);
+            searchFlightForm.add(cityDestination);
+            searchFlightForm.add(cityOrgin);
 
             cityOrgin.add(new AjaxFormComponentUpdatingBehavior("onchange") {
                 @Override

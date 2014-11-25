@@ -13,22 +13,22 @@ import java.io.Serializable;
 
 public class MenuUserPage extends WebPage implements Serializable {
     public MenuUserPage() {
-//        add(new UserPanelPage("userPanel"));
+       add(new UserPanelPage("userPanel"));
 //        Session session = getSession();
 //        Boolean login = (Boolean) session.getAttribute("login");
         ExtendedSession extendedSession=ExtendedSession.get();
         Boolean login=extendedSession.getLogined();
         if (login) {
-            Form form = new Form("form");
-            form.add(new Button("logoutButton") {
+            Form menuUserForm = new Form("menuUserForm");
+            menuUserForm.add(new Button("logoutButton") {
                 @Override
                 public void onSubmit() {
                     setResponsePage(LoginPage.class);
-                    ExtendedSession extendedSession=ExtendedSession.get();
-                   extendedSession.clear();
+                    ExtendedSession extendedSession = ExtendedSession.get();
+                    extendedSession.clear();
                 }
             });
-            add(form);
+            add(menuUserForm);
         }
     }
 }

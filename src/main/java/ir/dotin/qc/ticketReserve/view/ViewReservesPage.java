@@ -40,7 +40,7 @@ public class ViewReservesPage extends WebPage implements Serializable {
         if (login) {
             add(new UserPanelPage("userPanel"));
             final RadioGroup<Reserve> reserveRadioGroup = new RadioGroup<Reserve>("reserveRadioGroup", new Model<Reserve>());
-            Form<?> form = new Form("form") {
+            Form<?> viewReservesForm = new Form("viewReservesForm") {
                 @Override
                 protected void onSubmit() {
                     reserve = (Reserve) reserveRadioGroup.getDefaultModelObject();
@@ -70,11 +70,11 @@ public class ViewReservesPage extends WebPage implements Serializable {
                 }
             };
             deleteButton.setDefaultFormProcessing(false);
-            form.add(deleteButton);
+            viewReservesForm.add(deleteButton);
 
 
-            add(form);
-            form.add(reserveRadioGroup);
+            add(viewReservesForm);
+            viewReservesForm.add(reserveRadioGroup);
             Integer userID = (Integer) extendedSession.getUserID();
             ListView<Reserve> reserveListView = new ListView<Reserve>("reserveListView", reserveGateway.list(userID)) {
 
