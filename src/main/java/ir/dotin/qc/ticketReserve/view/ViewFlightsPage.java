@@ -6,7 +6,6 @@ package ir.dotin.qc.ticketReserve.view;
 
 import ir.dotin.qc.ticketReserve.gateway.FlightGateway;
 import ir.dotin.qc.ticketReserve.model.Flight;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -33,8 +32,8 @@ public class ViewFlightsPage extends WebPage implements Serializable {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        Session session = getSession();
-        Boolean login = (Boolean) session.getAttribute("login");
+        ExtendedSession extendedSession=ExtendedSession.get();
+        Boolean login=extendedSession.getLogined();
         if (login) {
             add(new AdminPanelPage("adminPanel"));
             final RadioGroup<Flight> flightRadioGroup = new RadioGroup<Flight>("flightRadioGroup", new Model<Flight>());
@@ -58,24 +57,29 @@ public class ViewFlightsPage extends WebPage implements Serializable {
                 }
             });
 
-            Button button2 = new Button("delete") {
+            Button deleteButton = new Button("delete") {
                 @Override
                 public void onSubmit() {
                     if (flight == null)
                         info("لطفا گزینه مورد نظر را ثبت یا انتخاب کنید");
                     else {
-                        Boolean b = flightGateway.destroy(flight.getId().toString(), Flight.class);
-                        if (b) {
-                            info("حذف با موفقیت  انجام شد");
-                            setResponsePage(ViewFlightsPage.class);
-                        } else
-                            info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                        try {
+                            Boolean b = flightGateway.destroy(flight.getId().toString(), Flight.class);
+                            if (b) {
+                                info("حذف با موفقیت  انجام شد");
+                                setResponsePage(ViewFlightsPage.class);
+                            } else
+                                info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
 
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                        }
                     }
                 }
             };
-            button2.setDefaultFormProcessing(false);
-            form.add(button2);
+            deleteButton.setDefaultFormProcessing(false);
+            form.add(deleteButton);
 
 
             add(form);

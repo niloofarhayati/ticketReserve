@@ -3,7 +3,6 @@ package ir.dotin.qc.ticketReserve.gateway;
 
 import ir.dotin.qc.ticketReserve.model.User;
 import ir.dotin.qc.ticketReserve.util.HibernateUtil;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -26,13 +25,8 @@ public class UserGateway extends Gateway {
                 session.getTransaction().commit();
                 return id.getId();
             } else
-                return null;
-        } catch (Exception he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
-        } finally {
+                return 0;
+        }  finally {
             session.close();
         }
     }
@@ -45,13 +39,13 @@ public class UserGateway extends Gateway {
                     "from User where username=:username");
             query.setParameter("username", username);
             User b = (User) query.uniqueResult();
+            if(b!=null){
             session.getTransaction().commit();
             return b.getId();
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
+            }
+            else{
+                return 0;
+            }
         } finally {
             session.close();
         }
@@ -59,7 +53,7 @@ public class UserGateway extends Gateway {
 
     public Boolean IsAdmin(Integer id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
+        session.beginTransaction();
         try {
             User b = (User) session.get(User.class, id);
             session.getTransaction().commit();
@@ -68,11 +62,6 @@ public class UserGateway extends Gateway {
             else {
                 return false;
             }
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return false;
         } finally {
             session.close();
         }
@@ -81,16 +70,11 @@ public class UserGateway extends Gateway {
 
     public List<User> list() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
+        session.beginTransaction();
         try {
             List<User> l = session.createQuery("from  User").list();
             session.getTransaction().commit();
             return l;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return null;
         } finally {
             session.close();
         }
@@ -98,7 +82,7 @@ public class UserGateway extends Gateway {
 
     public Boolean update(String id, String first, String last, String username, String pass, Integer type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
+        session.beginTransaction();
         try {
             User b = (User) session.get(User.class, Integer.parseInt(id));
             b.setFirst_name(first);
@@ -107,19 +91,14 @@ public class UserGateway extends Gateway {
             session.update(b);
             session.getTransaction().commit();
             return  true;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return false;
-        } finally {
+        }  finally {
             session.close();
         }
     }
 
     public Boolean createAndStoreAdmin(String last, String first, String pass, String username, Integer type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction trans = session.beginTransaction();
+        session.beginTransaction();
         try {
 
             User ad = new User();
@@ -131,11 +110,6 @@ public class UserGateway extends Gateway {
             session.save(ad);
             session.getTransaction().commit();
             return true;
-        } catch (HibernateException he) {
-            he.printStackTrace();
-            if (trans != null)
-                trans.rollback();
-            return false;
         } finally {
             session.close();
         }

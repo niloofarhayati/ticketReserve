@@ -13,7 +13,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.io.Serializable;
 
@@ -56,25 +55,23 @@ public class LoginPage extends WebPage implements Serializable {
                     Integer loginStatus = userGateway.Login(username, password);
                     if (userGateway.IsAdmin(loginStatus)) {
                         feedbackLabel.setDefaultModelObject("login Successful");
-//                        ExtendedSession extendedSession=ExtendedSession.get();
-//                        extendedSession.setUserID(loginStatus);
-//                        extendedSession.setLogined(true);
+//                        ExtendedSession.get().setUserID(loginStatus);
+//                        ExtendedSession.get().setLogined(true);
                         Session session = getSession();
                         session.setAttribute("userID", loginStatus);
                         session.setAttribute("login", true);
-                        PageParameters params = new PageParameters();
-                        params.add("login", "true");
                         setResponsePage(new MenuAdminPage());
                     } else {
                         feedbackLabel.setDefaultModelObject("login Successful");
+//                        ExtendedSession.get().setUserID(loginStatus);
+//                        ExtendedSession.get().setLogined(true);
                         Session session = getSession();
-                        session.setAttribute("USERID", loginStatus);
+                        session.setAttribute("userID", loginStatus);
                         session.setAttribute("login", true);
-                        PageParameters params = new PageParameters();
-                        params.add("login", "true");
-                        setResponsePage(MenuUserPage.class, params);
+                        setResponsePage(MenuUserPage.class);
                     }
                 } catch(Exception e) {
+                    e.printStackTrace();
                     feedbackLabel.setDefaultModelObject("wrong username or password");
                 }
                 usernameField.setModelObject("");

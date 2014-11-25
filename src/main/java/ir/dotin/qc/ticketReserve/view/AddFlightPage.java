@@ -12,16 +12,17 @@ import ir.dotin.qc.ticketReserve.model.Airline;
 import ir.dotin.qc.ticketReserve.model.Airport;
 import ir.dotin.qc.ticketReserve.model.City;
 import ir.dotin.qc.ticketReserve.model.Flight;
-import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.NumberTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.markup.html.form.TextField;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -57,8 +58,10 @@ public class AddFlightPage extends WebPage implements Serializable {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        Session session = getSession();
-        Boolean login = (Boolean) session.getAttribute("login");
+//        Session session = getSession();
+//        Boolean login = (Boolean) session.getAttribute("login");
+        ExtendedSession extendedSession=ExtendedSession.get();
+        Boolean login=extendedSession.getLogined();
         if (login) {
             add(new AdminPanelPage("AdminPanel"));
 
@@ -83,20 +86,27 @@ public class AddFlightPage extends WebPage implements Serializable {
             Form<?> form = new Form<Void>("form") {
                 @Override
                 protected void onSubmit() {
-                    Flight flight = new Flight();
-                    flight.setName((String) flightName.getModelObject());
-                    flight.setCapacity((Integer) flightCapacity.getModelObject());
-                    flight.setOrgin_id(cityGateway.findCity(orgin));
-                    flight.setDestination_id(cityGateway.findCity(destination));
-                    flight.setAirport_id(airportGateway.findAirport(airpo));
-                    flight.setAirLine_id(airlineGateway.findAirline(airli));
-                    Boolean saved = flightGateway.save(flight);
-                    flightCapacity.setModelObject(0);
-                    flightName.setModelObject("");
-                    if (saved) {
-                        info("پرواز با موفقیت اضافه شد");
-                    } else
-                        info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                    try {
+                        Flight flight = new Flight();
+                        flight.setName((String) flightName.getModelObject());
+                        flight.setCapacity((Integer) flightCapacity.getModelObject());
+                        flight.setOrgin_id(cityGateway.findCity(orgin));
+                        flight.setDestination_id(cityGateway.findCity(destination));
+                        flight.setAirport_id(airportGateway.findAirport(airpo));
+                        flight.setAirLine_id(airlineGateway.findAirline(airli));
+                        Boolean saved = flightGateway.save(flight);
+                        flightCapacity.setModelObject(0);
+                        flightName.setModelObject("");
+                        if (saved) {
+                            info("پرواز با موفقیت اضافه شد");
+                        } else
+                            info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                    }
+                catch (Exception e){
+                    e.printStackTrace();
+                    info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                }
+
                 }
             };
             add(form);

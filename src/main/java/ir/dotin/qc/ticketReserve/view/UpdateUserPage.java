@@ -6,8 +6,6 @@ package ir.dotin.qc.ticketReserve.view;
 
 import ir.dotin.qc.ticketReserve.gateway.UserGateway;
 import ir.dotin.qc.ticketReserve.model.User;
-import ir.dotin.qc.ticketReserve.util.Constants;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -36,12 +34,11 @@ public class UpdateUserPage extends WebPage implements Serializable {
     UserGateway userGateway = new UserGateway();
 
     public UpdateUserPage(final PageParameters parameters) {
-        Session session = getSession();
-        Boolean login = (Boolean) session.getAttribute("login");
+        ExtendedSession extendedSession=ExtendedSession.get();
+        Boolean login=extendedSession.getLogined();
         if (login) {
             final Integer in = parameters.get("user").toInt();
             add(new AdminPanelPage("adminPanel"));
-            if (Constants.LOGIN) {
                 Form form = new Form("form");
                 usernameFiled = new TextField("username_filed", new Model(""));
                 add(username = new Label("username", new Model("username")));
@@ -66,27 +63,32 @@ public class UpdateUserPage extends WebPage implements Serializable {
                 form.add(new Button("button") {
                     @Override
                     public void onSubmit() {
-                        String username = (String) usernameFiled.getModelObject();
-                        String pass = (String) passwordField.getModelObject();
-                        String first = (String) firstNameField.getModelObject();
-                        String last = (String) lastNameField.getModelObject();
-                        Integer ty = (Integer) typeField.getModelObject();
-                        Boolean b = userGateway.update(in.toString(), first, last, username, pass, ty);
-                        if (b) {
-                            message.setDefaultModelObject("به روز رسانی با موفقیت انجام شد");
-                        } else {
-                            message.setDefaultModelObject("انجام درخواست شمادر حال حاضر امکان پذیر نمی باشد");
+                        try {
+                            String username = (String) usernameFiled.getModelObject();
+                            String pass = (String) passwordField.getModelObject();
+                            String first = (String) firstNameField.getModelObject();
+                            String last = (String) lastNameField.getModelObject();
+                            Integer ty = (Integer) typeField.getModelObject();
+                            Boolean b = userGateway.update(in.toString(), first, last, username, pass, ty);
+                            if (b) {
+                                message.setDefaultModelObject("به روز رسانی با موفقیت انجام شد");
+                            } else {
+                                message.setDefaultModelObject("انجام درخواست شمادر حال حاضر امکان پذیر نمی باشد");
+                            }
+                            usernameFiled.setModelObject("");
+                            passwordField.setModelObject("");
+                            firstNameField.setModelObject("");
+                            lastNameField.setModelObject("");
+                            typeField.setModelObject(1);
                         }
-                        usernameFiled.setModelObject("");
-                        passwordField.setModelObject("");
-                        firstNameField.setModelObject("");
-                        lastNameField.setModelObject("");
-                        typeField.setModelObject(1);
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                        }
                     }
                 });
                 add(form);
                 add(message = new Label("message", new Model("")));
-            }
         }
     }
 }

@@ -6,7 +6,6 @@ package ir.dotin.qc.ticketReserve.view;
 
 import ir.dotin.qc.ticketReserve.gateway.UserGateway;
 import ir.dotin.qc.ticketReserve.model.User;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -43,8 +42,10 @@ public class AddUserPage extends WebPage implements Serializable {
     protected void onInitialize() {
         super.onInitialize();
         add(new AdminPanelPage("adminPanel"));
-        Session session = getSession();
-        Boolean login = (Boolean) session.getAttribute("login");
+//        Session session = getSession();
+//        Boolean login = (Boolean) session.getAttribute("login");
+        ExtendedSession extendedSession=ExtendedSession.get();
+        Boolean login=extendedSession.getLogined();
         if (login) {
             Form form = new Form("form");
             usernameFiled = new TextField("username_field", new Model(""));
@@ -70,28 +71,33 @@ public class AddUserPage extends WebPage implements Serializable {
             form.add(new Button("addUserButton") {
                 @Override
                 public void onSubmit() {
-                    String username = (String) usernameFiled.getModelObject();
-                    Integer userID = userGateway.findID(username);
-                    if (userID != null) {
-                        message.setDefaultModelObject
-                                ("این نام کاربری تکراری می باشد لطفا دوباره انتخاب کنید");
-                    } else {
-
-                        String pass = (String) passwordField.getModelObject();
-                        String first = (String) firstNameField.getModelObject();
-                        String last = (String) lastNameField.getModelObject();
-                        Integer ty = (Integer) typeField.getModelObject();
-                        Boolean b = userGateway.createAndStoreAdmin(last, first, pass, username, ty);
-                        if (b) {
-                            message.setDefaultModelObject("اضافه کردن کاربر با موفقیت انجام شد");
+                    try {
+                        String username = (String) usernameFiled.getModelObject();
+                        Integer userID = userGateway.findID(username);
+                        if (userID != 0) {
+                            message.setDefaultModelObject
+                                    ("این نام کاربری تکراری می باشد لطفا دوباره انتخاب کنید");
                         } else {
-                            message.setDefaultModelObject("انجام درخواست شمادر حال حاضر امکان پذیر نمی باشد");
+
+                            String pass = (String) passwordField.getModelObject();
+                            String first = (String) firstNameField.getModelObject();
+                            String last = (String) lastNameField.getModelObject();
+                            Integer ty = (Integer) typeField.getModelObject();
+                            Boolean b = userGateway.createAndStoreAdmin(last, first, pass, username, ty);
+                            if (b) {
+                                message.setDefaultModelObject("اضافه کردن کاربر با موفقیت انجام شد");
+                            } else {
+                                message.setDefaultModelObject("انجام درخواست شمادر حال حاضر امکان پذیر نمی باشد");
+                            }
+                            usernameFiled.setModelObject("");
+                            passwordField.setModelObject("");
+                            firstNameField.setModelObject("");
+                            lastNameField.setModelObject("");
+                            typeField.setModelObject(1);
                         }
-                        usernameFiled.setModelObject("");
-                        passwordField.setModelObject("");
-                        firstNameField.setModelObject("");
-                        lastNameField.setModelObject("");
-                        typeField.setModelObject(1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
                     }
                 }
             });

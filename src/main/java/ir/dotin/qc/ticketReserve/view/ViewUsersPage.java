@@ -35,8 +35,8 @@ public class ViewUsersPage extends WebPage implements Serializable {
     protected void onInitialize() {
         super.onInitialize();
 
-        Session session = getSession();
-        Boolean login = (Boolean) session.getAttribute("login");
+        ExtendedSession extendedSession=ExtendedSession.get();
+        Boolean login=extendedSession.getLogined();
         if (login) {
             add(new AdminPanelPage("adminPanel"));
             final RadioGroup<User> userRadioGroup = new RadioGroup<User>("userRadioGroup", new Model<User>());
@@ -44,10 +44,9 @@ public class ViewUsersPage extends WebPage implements Serializable {
                 @Override
                 protected void onSubmit() {
                     user = (User) userRadioGroup.getDefaultModelObject();
-                   // info("selected person: " + userRadioGroup.getDefaultModelObjectAsString());
                 }
             };
-            Button button1 = new Button("update") {
+            Button updateButton = new Button("update") {
                 @Override
                 public void onSubmit() {
                     if(user==null){
@@ -60,26 +59,31 @@ public class ViewUsersPage extends WebPage implements Serializable {
                     }
                 }
             };
-            form.add(button1);
+            form.add(updateButton);
 
-            Button button2 = new Button("delete") {
+            Button deleteButton = new Button("delete") {
                 @Override
                 public void onSubmit() {
                     if (user == null) {
                         info("لطفا گزینه مورد نظر خود را انتخاب کنید");
                     } else {
-                        Boolean b = userGateway.destroy(user.getId().toString(), User.class);
-                        if (b) {
-                            info("حذف با موفقیت  انجام شد");
-                            setResponsePage(ViewUsersPage.class);
-                        } else
-                            info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                        try {
+                            Boolean b = userGateway.destroy(user.getId().toString(), User.class);
+                            if (b) {
+                                info("حذف با موفقیت  انجام شد");
+                                setResponsePage(ViewUsersPage.class);
+                            } else
+                                info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
 
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                        }
                     }
                 }
             };
-            button2.setDefaultFormProcessing(false);
-            form.add(button2);
+            deleteButton.setDefaultFormProcessing(false);
+            form.add(deleteButton);
 
             add(form);
             form.add(userRadioGroup);

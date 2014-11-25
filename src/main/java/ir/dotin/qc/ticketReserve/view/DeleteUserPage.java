@@ -6,7 +6,6 @@ package ir.dotin.qc.ticketReserve.view;
 
 import ir.dotin.qc.ticketReserve.gateway.UserGateway;
 import ir.dotin.qc.ticketReserve.model.User;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -26,8 +25,10 @@ public class DeleteUserPage extends WebPage implements Serializable {
 
     public DeleteUserPage() {
         add(new AdminPanelPage("adminPanel"));
-        Session session = getSession();
-        Boolean login = (Boolean) session.getAttribute("login");
+//        Session session = getSession();
+//        Boolean login = (Boolean) session.getAttribute("login");
+        ExtendedSession extendedSession=ExtendedSession.get();
+        Boolean login=extendedSession.getLogined();
         if (login) {
             Form form = new Form("form");
             userNameField = new TextField("username_field", new Model(""));
@@ -37,15 +38,22 @@ public class DeleteUserPage extends WebPage implements Serializable {
             form.add(new Button("deleteUserButton") {
                 @Override
                 public void onSubmit() {
-                    String username = (String) userNameField.getModelObject();
-                    Integer in = userGateway.findID(username);
-                    Boolean b = userGateway.destroy(in.toString(),User.class);
-                    if (b) {
-                        message.setDefaultModelObject("درخواست شما با موفقیت انجام شد");
-                    } else {
-                        message.setDefaultModelObject("امکان انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                    try {
+                        String username = (String) userNameField.getModelObject();
+                        Integer in = userGateway.findID(username);
+                        if(in!=0) {
+                            Boolean b = userGateway.destroy(in.toString(), User.class);
+                            if (b) {
+                                message.setDefaultModelObject("درخواست شما با موفقیت انجام شد");
+                            } else {
+                                message.setDefaultModelObject("امکان انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                            }
+                        }
+                        userNameField.setModelObject("");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
                     }
-                    userNameField.setModelObject("");
                 }
             });
             add(form);

@@ -5,9 +5,7 @@ package ir.dotin.qc.ticketReserve.view;
  */
 
 import ir.dotin.qc.ticketReserve.gateway.CityGateway;
-import ir.dotin.qc.ticketReserve.gateway.FlightGateway;
 import ir.dotin.qc.ticketReserve.model.City;
-import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebPage;
@@ -37,13 +35,19 @@ public class SearchFlightPage extends WebPage implements Serializable {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        Session session = getSession();
-        Boolean login = (Boolean) session.getAttribute("login");
+//        Session session = getSession();
+//        Boolean login = (Boolean) session.getAttribute("login");
+        ExtendedSession extendedSession=ExtendedSession.get();
+        Boolean login=extendedSession.getLogined();
         if (login) {
             add(new UserPanelPage("userPanel"));
-            for (City city : cityGateway.list()) {
-                System.out.println(city.getName());
-                cities.add(city.getName());
+            try {
+                for (City city : cityGateway.list()) {
+                    cities.add(city.getName());
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
             }
             add(new FeedbackPanel("feedback1"));
 

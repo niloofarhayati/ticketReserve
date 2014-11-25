@@ -11,7 +11,6 @@ import ir.dotin.qc.ticketReserve.gateway.FlightGateway;
 import ir.dotin.qc.ticketReserve.model.Airline;
 import ir.dotin.qc.ticketReserve.model.Airport;
 import ir.dotin.qc.ticketReserve.model.City;
-import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebPage;
@@ -49,8 +48,10 @@ public class UpdateFlightPage extends WebPage implements Serializable {
     private Integer fly;
 
     public UpdateFlightPage(final PageParameters parameters) {
-        Session session = getSession();
-        Boolean login = (Boolean) session.getAttribute("login");
+//        Session session = getSession();
+//        Boolean login = (Boolean) session.getAttribute("login");
+        ExtendedSession extendedSession=ExtendedSession.get();
+        Boolean login=extendedSession.getLogined();
         if (login) {
             add(new AdminPanelPage("adminPanel"));
             fly = parameters.get("flight").toInt();
@@ -58,34 +59,43 @@ public class UpdateFlightPage extends WebPage implements Serializable {
             flightName = new TextField("flightName", new Model(""));
             add(orginLabel = new Label("orginLabel", new Model("نام پرواز")));
             add(destLabel = new Label("destLabel", new Model("ظرفیت")));
-            for (City city : cityGateway.list()) {
-                System.out.println(city.getName());
-                cities.add(city.getName());
-            }
-            for (Airline airline : airlineGateway.list()) {
-                airLineList.add(airline.getName());
-            }
-            for (Airport airport : airportGateway.list()) {
-                airPortList.add(airport.getName());
+            try {
+                for (City city : cityGateway.list()) {
+                    System.out.println(city.getName());
+                    cities.add(city.getName());
+                }
+                for (Airline airline : airlineGateway.list()) {
+                    airLineList.add(airline.getName());
+                }
+                for (Airport airport : airportGateway.list()) {
+                    airPortList.add(airport.getName());
+                }
+            } catch (Exception e){
+                e.printStackTrace();
             }
 
             Form<?> form = new Form<Void>("form") {
                 @Override
                 protected void onSubmit() {
-                    String name = (String) flightName.getModelObject();
-                    Integer capacity = (Integer) flightCapacity.getModelObject();
-                    Integer orginID = cityGateway.findCity(orgin);
-                    Integer destinationID = cityGateway.findCity(destination);
-                    Integer airportID = airportGateway.findAirport(airpo);
-                    Integer airlinID = airlineGateway.findAirline(airli);
-                    Boolean saved = flightGateway.update(fly, airlinID, name, airportID,
-                            capacity, orginID, destinationID);
-                    flightCapacity.setModelObject(0);
-                    flightName.setModelObject("");
-                    if (saved) {
-                        info("پرواز با موفقیت به روز رسانی شد");
-                    } else
+                    try {
+                        String name = (String) flightName.getModelObject();
+                        Integer capacity = (Integer) flightCapacity.getModelObject();
+                        Integer orginID = cityGateway.findCity(orgin);
+                        Integer destinationID = cityGateway.findCity(destination);
+                        Integer airportID = airportGateway.findAirport(airpo);
+                        Integer airlinID = airlineGateway.findAirline(airli);
+                        Boolean saved = flightGateway.update(fly, airlinID, name, airportID,
+                                capacity, orginID, destinationID);
+                        flightCapacity.setModelObject(0);
+                        flightName.setModelObject("");
+                        if (saved) {
+                            info("پرواز با موفقیت به روز رسانی شد");
+                        } else
+                            info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                    } catch (Exception e) {
+                        e.printStackTrace();
                         info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+                    }
                 }
             };
             add(form);

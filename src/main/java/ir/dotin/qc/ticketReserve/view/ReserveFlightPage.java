@@ -8,7 +8,6 @@ import ir.dotin.qc.ticketReserve.gateway.FlightGateway;
 import ir.dotin.qc.ticketReserve.gateway.ReserveGateway;
 import ir.dotin.qc.ticketReserve.model.Flight;
 import ir.dotin.qc.ticketReserve.model.Reserve;
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -31,8 +30,10 @@ public class ReserveFlightPage extends WebPage implements Serializable {
 
     public ReserveFlightPage(final PageParameters parameters) {
 
-        Session session = getSession();
-        Boolean login = (Boolean) session.getAttribute("login");
+//        Session session = getSession();
+//        Boolean login = (Boolean) session.getAttribute("login");
+        ExtendedSession extendedSession=ExtendedSession.get();
+        Boolean login=extendedSession.getLogined();
         if (login) {
             add(new UserPanelPage("userPanel"));
             String destination = parameters.get("destination").toString();
@@ -46,21 +47,26 @@ public class ReserveFlightPage extends WebPage implements Serializable {
                     if (flight == null) {
                         info("لطفا گزینه مورد نظر خود را انتخاب کنید");
                     } else {
-                        flight = (Flight) flightRadioGroup.getDefaultModelObject();
-                        System.out.println(flightRadioGroup.getId());
-                        String s = flightGateway.Reserve(flight.getId());
-                        if (s.equalsIgnoreCase("Success")) {
-                            info("رزرو با موفقیت انجام شد ");
-                            Reserve reserve = new Reserve();
-                            reserve.setFlightID(flight.getId());
-                            Session session = getSession();
-                            Integer userID = (Integer) session.getAttribute("USERID");
-                            reserve.setUserID(userID);
-                            reserveGateway.save(reserve);
-                        } else if (s.equalsIgnoreCase("Flight is Full")) {
-                            info("‍‍‍‍‍ظرفیت پرواز مورد نظر به اتمام رسیده است");
-                        } else {
-                            info("انجام درخواست شما در حال حاضر امکان ‍ذیر نمی باشد");
+                        try {
+                            flight = (Flight) flightRadioGroup.getDefaultModelObject();
+                            String s = flightGateway.Reserve(flight.getId());
+                            if (s.equalsIgnoreCase("Success")) {
+                                info("رزرو با موفقیت انجام شد ");
+                                Reserve reserve = new Reserve();
+                                reserve.setFlightID(flight.getId());
+                                ExtendedSession extendedSession=ExtendedSession.get();
+                                Boolean login=extendedSession.getLogined();
+                                Integer userID = (Integer) extendedSession.getUserID();
+                                reserve.setUserID(userID);
+                                reserveGateway.save(reserve);
+                            } else if (s.equalsIgnoreCase("Flight is Full")) {
+                                info("‍‍‍‍‍ظرفیت پرواز مورد نظر به اتمام رسیده است");
+                            } else {
+                                info("انجام درخواست شما در حال حاضر امکان ‍ذیر نمی باشد");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
                         }
                     }
                 }
