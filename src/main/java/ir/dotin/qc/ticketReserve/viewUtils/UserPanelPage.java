@@ -1,4 +1,4 @@
-package ir.dotin.qc.ticketReserve.viewComponent;
+package ir.dotin.qc.ticketReserve.viewUtils;
 
 /**
  * Created by niloofar on 11/8/14.

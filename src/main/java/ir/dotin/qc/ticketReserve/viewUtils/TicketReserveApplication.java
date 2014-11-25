@@ -2,7 +2,6 @@ package ir.dotin.qc.ticketReserve.viewUtils; /**
  * Created by niloofar on 11/8/14.
  */
 
-import ir.dotin.qc.ticketReserve.viewUser.LoginPage;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
