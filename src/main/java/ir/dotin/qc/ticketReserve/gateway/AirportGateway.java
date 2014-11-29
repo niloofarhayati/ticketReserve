@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AirportGateway extends Gateway {
 
-    public Integer findAirport(String name) {
+    public Integer findAirport(String name) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -24,7 +24,7 @@ public class AirportGateway extends Gateway {
         }
     }
 
-    public void update(String id, String name, String place, Integer capacity) {
+    public void update(String id, String name, String place, Integer capacity) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -38,7 +38,7 @@ public class AirportGateway extends Gateway {
             session.close();
         }
     }
-    public List<Airport> list() {
+    public List<Airport> list() throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
        session.beginTransaction();
         try {
@@ -51,7 +51,7 @@ public class AirportGateway extends Gateway {
     }
 
 
-    private Boolean createAndStoreAdmin(String place, String name, Integer capacity) {
+    private Boolean createAndStoreAdmin(String place, String name, Integer capacity)throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {

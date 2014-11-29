@@ -1,4 +1,4 @@
-package ir.dotin.qc.ticketReserve.viewUtils;
+package ir.dotin.qc.ticketReserve.user;
 
 /**
  * Created by niloofar on 11/8/14.
@@ -6,6 +6,8 @@ package ir.dotin.qc.ticketReserve.viewUtils;
 
 import ir.dotin.qc.ticketReserve.gateway.UserGateway;
 import ir.dotin.qc.ticketReserve.model.User;
+import ir.dotin.qc.ticketReserve.viewUtils.AdminPanelPage;
+import ir.dotin.qc.ticketReserve.viewUtils.ExtendedSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -18,12 +20,17 @@ import java.io.Serializable;
 
 public class DeleteUserPage extends WebPage implements Serializable {
     private Label message;
-    private Label username;
     private TextField userNameField;
-    private User ad = new User();
-    UserGateway userGateway = new UserGateway();
+    private User ad;
+    UserGateway userGateway;
 
     public DeleteUserPage() {
+        userGateway = new UserGateway();
+        ad = new User();
+    }
+    @Override
+       protected void onInitialize() {
+        super.onInitialize();
         add(new AdminPanelPage("adminPanel"));
 //        Session session = getSession();
 //        Boolean login = (Boolean) session.getAttribute("login");
@@ -32,6 +39,7 @@ public class DeleteUserPage extends WebPage implements Serializable {
         if (login) {
             Form deleteUserForm = new Form("deleteUserForm");
             userNameField = new TextField("username_field", new Model(""));
+            Label username;
             add(username = new Label("username", new Model("username")));
             deleteUserForm.add(userNameField);
             deleteUserForm.add(username);

@@ -1,7 +1,9 @@
-package ir.dotin.qc.ticketReserve.viewUtils; /**
+package ir.dotin.qc.ticketReserve.viewUtils;
+/**
  * Created by niloofar on 11/8/14.
  */
 
+import ir.dotin.qc.ticketReserve.user.LoginPage;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
@@ -16,12 +18,13 @@ public class TicketReserveApplication extends WebApplication {
         System.out.println("salam");
         return new ExtendedSession(request);
     }
-
-    /**
-     * @see org.apache.wicket.Application#getHomePage()
-     */
     @Override
     public Class getHomePage() {
         return LoginPage.class;
     }
+//    @Override
+//    public void init() {
+//        super.init();
+//        getResourceSettings().getResourceFinders().add(new WebApplicationPath(getServletContext(), "pages"));
+//    }
 }

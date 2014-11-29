@@ -1,4 +1,4 @@
-package ir.dotin.qc.ticketReserve.viewUtils;
+package ir.dotin.qc.ticketReserve.flight;
 
 /**
  * Created by niloofar on 11/8/14.
@@ -6,6 +6,8 @@ package ir.dotin.qc.ticketReserve.viewUtils;
 
 import ir.dotin.qc.ticketReserve.gateway.FlightGateway;
 import ir.dotin.qc.ticketReserve.model.Flight;
+import ir.dotin.qc.ticketReserve.viewUtils.AdminPanelPage;
+import ir.dotin.qc.ticketReserve.viewUtils.ExtendedSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -84,22 +86,28 @@ public class ViewFlightsPage extends WebPage implements Serializable {
 
             add(viewFlightForm);
             viewFlightForm.add(flightRadioGroup);
-            ListView<Flight> flightListView = new ListView<Flight>("flightListView", flightGateway.list()) {
+            ListView<Flight> flightListView = null;
+            try {
+                flightListView = new ListView<Flight>("flightListView", flightGateway.list()) {
 
-                @Override
-                protected void populateItem(ListItem<Flight> item) {
-                    item.add(new Radio<Flight>("flightRadio", item.getModel()));
-                    item.add(new Label("name", new PropertyModel<String>(item.getDefaultModel(),
-                            "name")));
-                    item.add(new Label("orgin_id",
-                            new PropertyModel<String>(item.getDefaultModel(), "orgin_id")));
-                    item.add(new Label("destination_id", new PropertyModel<String>(item.getDefaultModel(),
-                            "destination_id")));
-                    item.add(new Label("capacity", new PropertyModel<String>(item.getDefaultModel(),
-                            "capacity")));
-                }
+                    @Override
+                    protected void populateItem(ListItem<Flight> item) {
+                        item.add(new Radio<Flight>("flightRadio", item.getModel()));
+                        item.add(new Label("name", new PropertyModel<String>(item.getDefaultModel(),
+                                "name")));
+                        item.add(new Label("orgin_id",
+                                new PropertyModel<String>(item.getDefaultModel(), "orgin_id")));
+                        item.add(new Label("destination_id", new PropertyModel<String>(item.getDefaultModel(),
+                                "destination_id")));
+                        item.add(new Label("capacity", new PropertyModel<String>(item.getDefaultModel(),
+                                "capacity")));
+                    }
 
-            };
+                };
+            } catch (Exception e) {
+                e.printStackTrace();
+                info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+            }
 
             flightRadioGroup.add(flightListView);
 

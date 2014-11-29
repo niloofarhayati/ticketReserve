@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public class ReserveGateway extends Gateway {
-    public void update(Integer flightID, Integer userID, Integer id) {
+    public void update(Integer flightID, Integer userID, Integer id) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -23,7 +23,7 @@ public class ReserveGateway extends Gateway {
             session.close();
         }
     }
-    public List<Reserve> list(Integer id) {
+    public List<Reserve> list(Integer id) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
@@ -36,7 +36,7 @@ public class ReserveGateway extends Gateway {
     }
 
 
-    private Boolean createAndStoreAdmin(Integer flightID, Integer userID) {
+    private Boolean createAndStoreAdmin(Integer flightID, Integer userID)throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {

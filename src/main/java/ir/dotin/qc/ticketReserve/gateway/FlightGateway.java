@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FlightGateway extends Gateway {
 
-    public List<Flight> flightList(String destination, String orgin) {
+    public List<Flight> flightList(String destination, String orgin) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         CityGateway cityGateway = new CityGateway();
@@ -29,7 +29,7 @@ public class FlightGateway extends Gateway {
     }
 
 
-    public String Reserve(Integer id) {
+    public String Reserve(Integer id) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
        session.beginTransaction();
         try {
@@ -46,7 +46,7 @@ public class FlightGateway extends Gateway {
             session.close();
         }
     }
-    public String UnReserve(Integer id) {
+    public String UnReserve(Integer id) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -60,7 +60,7 @@ public class FlightGateway extends Gateway {
         }
     }
 
-    public List<Flight> list() {
+    public List<Flight> list()throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -73,7 +73,7 @@ public class FlightGateway extends Gateway {
     }
 
     public Boolean update(Integer id, Integer airlinID, String name, Integer airportID,
-                       Integer capacity, Integer orginID, Integer destinationID) {
+                       Integer capacity, Integer orginID, Integer destinationID) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -93,7 +93,7 @@ public class FlightGateway extends Gateway {
     }
 
     private void createAndStoreAdmin(Integer airlinID, String name, Integer airportID,
-                                     Integer capacity, Integer orginID, Integer destinationID) {
+                                     Integer capacity, Integer orginID, Integer destinationID) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
          session.beginTransaction();
         try {

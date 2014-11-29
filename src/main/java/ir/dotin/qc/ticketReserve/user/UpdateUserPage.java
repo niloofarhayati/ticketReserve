@@ -1,11 +1,12 @@
-package ir.dotin.qc.ticketReserve.viewUtils;
+package ir.dotin.qc.ticketReserve.user;
 
 /**
  * Created by niloofar on 11/8/14.
  */
 
 import ir.dotin.qc.ticketReserve.gateway.UserGateway;
-import ir.dotin.qc.ticketReserve.model.User;
+import ir.dotin.qc.ticketReserve.viewUtils.AdminPanelPage;
+import ir.dotin.qc.ticketReserve.viewUtils.ExtendedSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -20,36 +21,42 @@ import java.io.Serializable;
 
 public class UpdateUserPage extends WebPage implements Serializable {
     private Label message;
-    private Label username;
-    private Label password;
-    private Label firstName;
-    private Label lastName;
-    private Label type;
     private TextField usernameFiled;
     private TextField passwordField;
     private TextField firstNameField;
     private TextField lastNameField;
     private NumberTextField typeField;
-    private User user = new User();
-    UserGateway userGateway = new UserGateway();
+    private UserGateway userGateway ;
+    private PageParameters parameters;
 
     public UpdateUserPage(final PageParameters parameters) {
+        userGateway = new UserGateway();
+        this.parameters=parameters;
+    }
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
         ExtendedSession extendedSession=ExtendedSession.get();
         Boolean login=extendedSession.getLogined();
         if (login) {
             final Integer in = parameters.get("user").toInt();
             add(new AdminPanelPage("adminPanel"));
                 Form updateUserForm = new Form("updateUserForm");
-                usernameFiled = new TextField("username_filed", new Model(""));
-                add(username = new Label("username", new Model("username")));
+                usernameFiled = new TextField("username_field", new Model(""));
+            Label username;
+            add(username = new Label("username", new Model("username")));
                 passwordField = new TextField("password_field", new Model(""));
-                add(password = new Label("password", new Model("password")));
+            Label password;
+            add(password = new Label("password", new Model("password")));
                 firstNameField = new TextField("firstName_field", new Model(""));
-                add(firstName = new Label("firstName", new Model("first Name")));
+            Label firstName;
+            add(firstName = new Label("firstName", new Model("first Name")));
                 lastNameField = new TextField("lastName_field", new Model(""));
-                add(lastName = new Label("lastName", new Model("last Name")));
+            Label lastName;
+            add(lastName = new Label("lastName", new Model("last Name")));
                 typeField = new NumberTextField("type_field", new Model(1));
-                add(type = new Label("type", new Model("type")));
+            Label type;
+            add(type = new Label("type", new Model("type")));
                 updateUserForm.add(usernameFiled);
                 updateUserForm.add(username);
                 updateUserForm.add(passwordField);

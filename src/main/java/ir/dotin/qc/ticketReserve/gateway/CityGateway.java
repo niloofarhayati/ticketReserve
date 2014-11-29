@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CityGateway extends Gateway {
 
-    public Integer findCity(String city) {
+    public Integer findCity(String city) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -26,7 +26,7 @@ public class CityGateway extends Gateway {
         }
     }
 
-    public void update(String id, String name) {
+    public void update(String id, String name) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -39,7 +39,7 @@ public class CityGateway extends Gateway {
         }
     }
 
-    public List<City> list() {
+    public List<City> list() throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -51,7 +51,7 @@ public class CityGateway extends Gateway {
         }
     }
 
-    private Boolean createAndStoreAdmin(String name) {
+    private Boolean createAndStoreAdmin(String name) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {

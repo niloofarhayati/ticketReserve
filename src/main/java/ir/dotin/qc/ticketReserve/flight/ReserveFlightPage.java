@@ -1,4 +1,4 @@
-package ir.dotin.qc.ticketReserve.viewUtils;
+package ir.dotin.qc.ticketReserve.flight;
 
 /**
  * Created by niloofar on 11/8/14.
@@ -8,6 +8,8 @@ import ir.dotin.qc.ticketReserve.gateway.FlightGateway;
 import ir.dotin.qc.ticketReserve.gateway.ReserveGateway;
 import ir.dotin.qc.ticketReserve.model.Flight;
 import ir.dotin.qc.ticketReserve.model.Reserve;
+import ir.dotin.qc.ticketReserve.viewUtils.ExtendedSession;
+import ir.dotin.qc.ticketReserve.viewUtils.UserPanelPage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -25,20 +27,31 @@ import java.util.List;
 
 
 public class ReserveFlightPage extends WebPage implements Serializable {
-    private FlightGateway flightGateway =new FlightGateway();
-    private ReserveGateway reserveGateway = new ReserveGateway();
+    private FlightGateway flightGateway;
+    private ReserveGateway reserveGateway;
+    private PageParameters parameters;
 
     public ReserveFlightPage(final PageParameters parameters) {
-
-//        Session session = getSession();
-//        Boolean login = (Boolean) session.getAttribute("login");
-        ExtendedSession extendedSession=ExtendedSession.get();
+        reserveGateway = new ReserveGateway();
+        flightGateway =new FlightGateway();
+        this.parameters=parameters;
+    }
+        @Override
+        protected void onInitialize() {
+            super.onInitialize();
+            ExtendedSession extendedSession=ExtendedSession.get();
         Boolean login=extendedSession.getLogined();
         if (login) {
             add(new UserPanelPage("userPanel"));
             String destination = parameters.get("destination").toString();
             String orgin = parameters.get("orgin").toString();
-            List<Flight> flightList = flightGateway.flightList(destination, orgin);
+            List<Flight> flightList = null;
+            try {
+                flightList = flightGateway.flightList(destination, orgin);
+            } catch (Exception e) {
+                e.printStackTrace();
+                info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+            }
             final RadioGroup<Flight> flightRadioGroup = new RadioGroup<Flight>("flightRadioGroup", new Model<Flight>());
             Form<?> reserveFlightForm = new Form("reserveFlightForm") {
                 @Override

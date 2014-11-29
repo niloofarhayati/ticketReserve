@@ -1,4 +1,4 @@
-package ir.dotin.qc.ticketReserve.viewUtils;
+package ir.dotin.qc.ticketReserve.flight;
 
 /**
  * Created by niloofar on 11/8/14.
@@ -7,6 +7,8 @@ package ir.dotin.qc.ticketReserve.viewUtils;
 import ir.dotin.qc.ticketReserve.gateway.FlightGateway;
 import ir.dotin.qc.ticketReserve.gateway.ReserveGateway;
 import ir.dotin.qc.ticketReserve.model.Reserve;
+import ir.dotin.qc.ticketReserve.viewUtils.ExtendedSession;
+import ir.dotin.qc.ticketReserve.viewUtils.UserPanelPage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
@@ -76,20 +78,26 @@ public class ViewReservesPage extends WebPage implements Serializable {
             add(viewReservesForm);
             viewReservesForm.add(reserveRadioGroup);
             Integer userID = (Integer) extendedSession.getUserID();
-            ListView<Reserve> reserveListView = new ListView<Reserve>("reserveListView", reserveGateway.list(userID)) {
+            ListView<Reserve> reserveListView = null;
+            try {
+                reserveListView = new ListView<Reserve>("reserveListView", reserveGateway.list(userID)) {
 
-                @Override
-                protected void populateItem(ListItem<Reserve> item) {
-                    item.add(new Radio<Reserve>("reserveRadio", item.getModel()));
-                    item.add(new Label("id", new PropertyModel<String>(item.getDefaultModel(),
-                            "id")));
-                    item.add(new Label("userID",
-                            new PropertyModel<String>(item.getDefaultModel(), "userID")));
-                    item.add(new Label("flightID", new PropertyModel<String>(item.getDefaultModel(),
-                            "flightID")));
-                }
+                    @Override
+                    protected void populateItem(ListItem<Reserve> item) {
+                        item.add(new Radio<Reserve>("reserveRadio", item.getModel()));
+                        item.add(new Label("id", new PropertyModel<String>(item.getDefaultModel(),
+                                "id")));
+                        item.add(new Label("userID",
+                                new PropertyModel<String>(item.getDefaultModel(), "userID")));
+                        item.add(new Label("flightID", new PropertyModel<String>(item.getDefaultModel(),
+                                "flightID")));
+                    }
 
-            };
+                };
+            } catch (Exception e) {
+                e.printStackTrace();
+                info("انجام درخواست شما در حال حاضر امکان پذیر نمی باشد");
+            }
 
             reserveRadioGroup.add(reserveListView);
 

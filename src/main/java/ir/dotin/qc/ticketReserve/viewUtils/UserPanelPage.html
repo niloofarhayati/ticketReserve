@@ -5,7 +5,7 @@
     </wicket:link>
 </head>
 <body>
-<wicket:border>
+<wicket:panel>
     <p>
     <table>
         <tr>
@@ -13,21 +13,20 @@
                 <ul wicket:id="list" class="nav nav-pills nav-stacked">
                       <p>
                           <wicket:link>
-                              <Li><a href="SearchFlightPage.html"> جستجو و رزرو</a></Li><br/>
-                              <Li> <a href="ViewReservesPage.html"> نمایش رزرو های کاربر   </a></Li><br/>
-                               <Li><a href="MenuUserPage.html"> بازگشت به منو اصلی</a></Li><br/>
+                              <Li><a wicket:id="search-flight"> جستجو و رزرو</a></Li><br/>
+                              <Li> <a wicket:id="view-reserve"> نمایش رزرو های کاربر   </a></Li><br/>
+                               <Li><a wicket:id="menu-user"> بازگشت به منو اصلی</a></Li><br/>
                           </wicket:link>
                       </p>
                     </ul>
             </td>
             <td>
                 <ul wicket:id="body" class="nav nav-pills">
-                    <wicket:body/>
                 </ul>
             </td>
         </tr>
     </table>
     </p>
-</wicket:border>
+</wicket:panel>
 </body>
 </html>

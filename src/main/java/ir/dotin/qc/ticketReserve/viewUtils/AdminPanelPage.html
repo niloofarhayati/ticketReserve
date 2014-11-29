@@ -1,4 +1,4 @@
-<html>
+<html xmlns:wicket="http://www.w3.org/1999/xhtml">
 
 <head>
     <wicket:link>
@@ -14,13 +14,13 @@
                     <ul wicket:id="list" class="nav nav-sidebar">
                       <p>
                           <wicket:link>
-                              <li><a href="DeleteUserPage.html">حذف کاربر</a><br/></li>
-                              <li ><a href="AddUserPage.html">ایجاد کاربر جدید</a><br/></li>
-                              <li ><a href="ViewUsersPage.html">نمایش کاربران</a><br/></li>
-                              <li ><a href="AddFlightPage.html">اضافه کردن پرواز جدید</a><br/></li>
-                              <li ><a href="ViewFlightsPage.html">نمایش پروازها</a><br/></li>
-                              <li  class="active">
-                                  <a href="MenuAdminPage.html"> بازگشت به منو اصلی</a><br/></li>
+                              <li><a wicket:id="delete-user">حذف کاربر</a><br/></li>
+                              <li><a wicket:id="add-user"> اضافه کردن کاربر جدید</a><br/></li>
+                              <li><a wicket:id="view-user">نمایش کاربران</a><br/></li>
+                              <li><a wicket:id="add-flight">اضافه کردن پرواز جدید</a><br/></li>
+                              <li><a wicket:id="view-flight">نمایش پروازها</a><br/></li>
+                              <li class="active">
+                                  <a wicket:id="menu-admin"> بازگشت به منو اصلی</a><br/></li>
                           </wicket:link>
                       </p>
                     </ul>

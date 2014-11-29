@@ -12,7 +12,7 @@ import java.util.List;
 
 public class UserGateway extends Gateway {
 
-    public Integer Login(String username, String password) {
+    public Integer Login(String username, String password) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
@@ -31,7 +31,7 @@ public class UserGateway extends Gateway {
         }
     }
 
-    public Integer findID(String username) {
+    public Integer findID(String username) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
@@ -51,7 +51,7 @@ public class UserGateway extends Gateway {
         }
     }
 
-    public Boolean IsAdmin(Integer id) {
+    public Boolean IsAdmin(Integer id)throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -68,7 +68,7 @@ public class UserGateway extends Gateway {
     }
 
 
-    public List<User> list() {
+    public List<User> list() throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -80,7 +80,8 @@ public class UserGateway extends Gateway {
         }
     }
 
-    public Boolean update(String id, String first, String last, String username, String pass, Integer type) {
+    public Boolean update(String id, String first, String last,
+                          String username, String pass, Integer type)throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -96,7 +97,8 @@ public class UserGateway extends Gateway {
         }
     }
 
-    public Boolean createAndStoreAdmin(String last, String first, String pass, String username, Integer type) {
+    public Boolean createAndStoreAdmin(String last, String first,
+                                       String pass, String username, Integer type)throws Exception {
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {

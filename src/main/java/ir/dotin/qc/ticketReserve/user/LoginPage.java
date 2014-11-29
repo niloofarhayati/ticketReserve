@@ -1,10 +1,13 @@
-package ir.dotin.qc.ticketReserve.viewUtils;
+package ir.dotin.qc.ticketReserve.user;
 
 /**
  * Created by niloofar on 11/8/14.
  */
 
 import ir.dotin.qc.ticketReserve.gateway.UserGateway;
+import ir.dotin.qc.ticketReserve.viewUtils.ExtendedSession;
+import ir.dotin.qc.ticketReserve.viewUtils.MenuAdminPage;
+import ir.dotin.qc.ticketReserve.viewUtils.MenuUserPage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;

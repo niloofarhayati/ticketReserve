@@ -8,7 +8,7 @@ import org.hibernate.Transaction;
 
 public class Gateway<T> {
 
-    public T find(String id,Class<?> cls) {
+    public T find(String id,Class<?> cls) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
@@ -39,7 +39,7 @@ public class Gateway<T> {
 //    }
 
 
-    public Boolean destroy(String id,Class<?> cls) {
+    public Boolean destroy(String id,Class<?> cls) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
         try {
@@ -54,7 +54,7 @@ public class Gateway<T> {
     }
 
 
-    public ir.dotin.qc.ticketReserve.model.Transaction createConnection(){
+    public ir.dotin.qc.ticketReserve.model.Transaction createConnection()throws Exception{
         ir.dotin.qc.ticketReserve.model.Transaction transaction=new ir.dotin.qc.ticketReserve.model.Transaction();
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction trans = session.beginTransaction();
@@ -63,7 +63,7 @@ public class Gateway<T> {
         return  transaction;
     }
 
-    public Boolean save(T b) {
+    public Boolean save(T b) throws Exception{
         ir.dotin.qc.ticketReserve.model.Transaction transaction = this.createConnection();
         try {
             Session session=transaction.getSession();

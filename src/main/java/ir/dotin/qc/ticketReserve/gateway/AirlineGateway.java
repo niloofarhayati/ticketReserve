@@ -12,7 +12,7 @@ import java.util.List;
 public class AirlineGateway extends Gateway {
 
 
-    public Integer findAirline(String name) {
+    public Integer findAirline(String name) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
        try {
@@ -25,7 +25,7 @@ public class AirlineGateway extends Gateway {
             session.close();
         }
     }
-    public List<Airline> list() {
+    public List<Airline> list() throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -37,7 +37,7 @@ public class AirlineGateway extends Gateway {
         }
     }
 
-    public void update(String id, String name, String place) {
+    public void update(String id, String name, String place) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
@@ -51,7 +51,7 @@ public class AirlineGateway extends Gateway {
         }
     }
 
-    private Boolean createAndStoreAdmin(String place, String name) {
+    private Boolean createAndStoreAdmin(String place, String name) throws Exception{
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         try {
